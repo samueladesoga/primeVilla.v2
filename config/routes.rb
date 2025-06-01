@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
   root to: "home#index"
   resource :session
+  get  "/login",  to: "sessions#new"
+  post "/login",  to: "sessions#create"
+  delete "/logout", to: "sessions#destroy"
   resources :passwords, param: :token
   resource :registrations, only: [:new, :create]
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

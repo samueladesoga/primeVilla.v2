@@ -6,4 +6,8 @@ class User < ApplicationRecord
   validates :password, presence: true
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
+
+  def admin?
+    self.admin
+  end
 end
