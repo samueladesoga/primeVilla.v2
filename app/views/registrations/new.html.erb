@@ -6,7 +6,7 @@
         Sign up to create a new Tenant.
       </p>
 
-      <%= form_with url: registrations_url, model: @user, method: :post, class: "contents" do |form| %>
+      <%= form_with url: registrations_url, model: @user, method: :post, class: "bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" do |form| %>
         <div class="my-5">
           <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "Enter your email address", value: params[:email_address], class: "block shadow rounded-md border border-gray-400 focus:outline-blue-600 px-3 py-2 mt-2 w-full" %>
         </div>
@@ -24,7 +24,6 @@
             <div class="inline">
               <%= form.submit "Sign up", class: "rounded-lg py-2 px-6 bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
             </div>
-
             <div class="mt-4 text-sm text-gray-500 sm:mt-0">
               <%= link_to "Forgot password?", new_password_path, class: "text-gray-700 underline" %>
             </div>
