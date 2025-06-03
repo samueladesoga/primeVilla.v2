@@ -9,7 +9,6 @@ class RegistrationsController < ApplicationController
     def create
         @user = User.new(user_params)
         if @user.save
-          start_new_session_for @user
           redirect_to root_path, notice: "You have created a new Tenant successfully."
         else
           flash[:alert] = @user.errors.full_messages.join(", ")
@@ -20,6 +19,6 @@ class RegistrationsController < ApplicationController
     private
     
     def user_params
-        params.expect(user: [:email_address, :password, :password_confirmation])
+        params.expect(user: [:email_address, :first_name, :last_name, :password, :password_confirmation])
     end
   end
