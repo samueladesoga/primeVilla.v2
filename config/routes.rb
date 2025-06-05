@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :tenancies
   resources :rooms
   root to: "home#index"
   resource :session
