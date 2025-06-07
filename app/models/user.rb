@@ -13,4 +13,8 @@ class User < ApplicationRecord
   def admin?
     self.admin
   end
+
+  def name
+    "#{first_name} #{last_name}".strip
+  end 
 end

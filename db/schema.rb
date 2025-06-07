@@ -10,11 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_05_200940) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_07_211234) do
   create_table "rooms", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "is_empty", default: true, null: false
   end
 
   create_table "sessions", force: :cascade do |t|

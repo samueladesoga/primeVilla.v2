@@ -13,11 +13,12 @@ class UsersController < ApplicationController
   def update
     @user = User.find(params[:id])
     if @user.update(user_params)
-      redirect_to @user, notice: 'User was successfully updated.'
+      redirect_to users_path, notice: 'User was successfully updated.'
     else
       render :edit
     end
   end
+
   def destroy
     @user = User.find(params[:id])
     @user.destroy

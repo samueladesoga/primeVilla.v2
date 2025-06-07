@@ -12,7 +12,7 @@
 
   <div>
     <%= form.label :user_id, "Tenant", class: "block text-sm font-medium text-gray-700" %>
-    <%= form.collection_select :user_id, User.all, :id, :first_name, { prompt: "Select a user" },
+    <%= form.collection_select :user_id, User.all, :id, :name, { prompt: "Select a user" },
           { class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm" } %>
   </div>
 

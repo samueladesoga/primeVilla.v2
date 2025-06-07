@@ -24,12 +24,14 @@ class TenanciesController < ApplicationController
     @tenancy = Tenancy.new(tenancy_params)
 
     respond_to do |format|
-      if @tenancy.save
-        format.html { redirect_to @tenancy, notice: "Tenancy was successfully created." }
-        format.json { render :show, status: :created, location: @tenancy }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @tenancy.errors, status: :unprocessable_entity }
+      ActiveRecord::Base.transaction do
+        if @tenancy.save
+          @tenancy.room.update!(is_empty: false)
+          format.html { redirect_to @tenancy, notice: "Tenancy was successfully created." }
+        else
+          raise ActiveRecord::Rollback
+          format.html { render :edit, status: :unprocessable_entity }
+        end
       end
     end
   end
@@ -37,12 +39,14 @@ class TenanciesController < ApplicationController
   # PATCH/PUT /tenancies/1 or /tenancies/1.json
   def update
     respond_to do |format|
-      if @tenancy.update(tenancy_params)
-        format.html { redirect_to @tenancy, notice: "Tenancy was successfully updated." }
-        format.json { render :show, status: :ok, location: @tenancy }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @tenancy.errors, status: :unprocessable_entity }
+      ActiveRecord::Base.transaction do
+        if @tenancy.save
+          @tenancy.room.update!(is_empty: false) if @tenancy.room.present?
+          format.html { redirect_to @tenancy, notice: "Tenancy was successfully updated." }
+        else
+          raise ActiveRecord::Rollback
+          format.html { render :edit, status: :unprocessable_entity }
+        end
       end
     end
   end
