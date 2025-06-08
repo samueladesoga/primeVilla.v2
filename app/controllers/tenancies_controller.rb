@@ -20,18 +20,24 @@ class TenanciesController < ApplicationController
   end
 
   # POST /tenancies or /tenancies.json
+
   def create
     @tenancy = Tenancy.new(tenancy_params)
 
     respond_to do |format|
-      ActiveRecord::Base.transaction do
-        if @tenancy.save
+      begin
+        ActiveRecord::Base.transaction do
+          @tenancy.save!
           @tenancy.room.update!(is_empty: false)
-          format.html { redirect_to @tenancy, notice: "Tenancy was successfully created." }
-        else
-          raise ActiveRecord::Rollback
-          format.html { render :edit, status: :unprocessable_entity }
         end
+        format.html { redirect_to @tenancy, notice: "Tenancy was successfully created." }
+        format.json { render :show, status: :created, location: @tenancy }
+      rescue ActiveRecord::RecordInvalid => e
+        format.html do
+          flash.now[:alert] = "Error: #{e.record.errors.full_messages.join(', ')}"
+          render :new, status: :unprocessable_entity
+        end
+        format.json { render json: { errors: e.record.errors.full_messages }, status: :unprocessable_entity }
       end
     end
   end

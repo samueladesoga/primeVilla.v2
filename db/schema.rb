@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_07_211234) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_07_222907) do
   create_table "rooms", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -35,7 +35,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_07_211234) do
     t.text "comments"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["room_id", "start_date", "end_date"], name: "index_tenancies_on_room_id_and_start_date_and_end_date"
     t.index ["room_id"], name: "index_tenancies_on_room_id"
+    t.index ["user_id", "start_date", "end_date"], name: "index_tenancies_on_user_id_and_start_date_and_end_date"
     t.index ["user_id"], name: "index_tenancies_on_user_id"
   end
 
