@@ -9,6 +9,30 @@
 
   <%= render @room %>
 
+  <h1 class="text-2xl font-bold mb-4">Tenancies</h1>
+
+<table class="min-w-full table-auto border-collapse border border-gray-300">
+  <thead class="bg-gray-100">
+    <tr>
+      <th class="border px-4 py-2">Tenant</th>
+      <th class="border px-4 py-2">Start Date</th>
+      <th class="border px-4 py-2">End Date</th>
+      <th class="border px-4 py-2">Comments</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @room.tenancies.order(end_date: :desc).each do |tenancy| %>
+      <tr>
+        <td class="border px-4 py-2"><%= tenancy.user&.name %></td>
+        <td class="border px-4 py-2"><%= tenancy.start_date %></td>
+        <td class="border px-4 py-2"><%= tenancy.end_date %></td>
+        <td class="border px-4 py-2"><%= tenancy.comments %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
   <%= link_to "Edit this room", edit_room_path(@room), class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
   <%= link_to "Back to rooms", rooms_path, class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
   <%= button_to "Destroy this room", @room, method: :delete, form_class: "sm:inline-block mt-2 sm:mt-0 sm:ml-2", class: "w-full rounded-md px-3.5 py-2.5 text-white bg-red-600 hover:bg-red-500 font-medium cursor-pointer", data: { turbo_confirm: "Are you sure?" } %>

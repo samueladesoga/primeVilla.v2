@@ -16,16 +16,16 @@
     <% @rooms.each do |room| %>
       <tr>
         <% latest_tenancy = room.tenancies.order(end_date: :desc).first %>
-        <td class="border px-4 py-2"><%= latest_tenancy.nil? ? room.name : latest_tenancy.room&.name %></td>
-        <td class="border px-4 py-2"><%= latest_tenancy.nil? ? "Empty" : latest_tenancy.user&.name %></td>
-        <td class="border px-4 py-2"><%= latest_tenancy.nil? ? "Empty" : latest_tenancy.start_date %></td>
-        <td class="border px-4 py-2"><%= latest_tenancy.nil? ? "Empty" : latest_tenancy.end_date %></td>
-        <td class="border px-4 py-2"><%= latest_tenancy.nil? ? "Empty" : latest_tenancy.comments %></td>
+        <td class="border px-4 py-2"><%= room.is_empty? || latest_tenancy.nil? ? room.name : latest_tenancy.room&.name %></td>
+        <td class="border px-4 py-2"><%= room.is_empty? || latest_tenancy.nil? ? "Empty" : latest_tenancy.user&.name %></td>
+        <td class="border px-4 py-2"><%= room.is_empty? || latest_tenancy.nil? ? "Empty" : latest_tenancy.start_date %></td>
+        <td class="border px-4 py-2"><%= room.is_empty? || latest_tenancy.nil? ? "Empty" : latest_tenancy.end_date %></td>
+        <td class="border px-4 py-2"><%= room.is_empty? || latest_tenancy.nil? ? "Empty" : latest_tenancy.comments %></td>
         <td class="border px-4 py-2 space-x-2">
           <% unless latest_tenancy.nil? %>
-            <%= link_to "Show", room.tenancies.last, class: "text-blue-600 hover:underline" %>
-            <%= link_to "Edit", edit_tenancy_path(room.tenancies.last), class: "text-yellow-600 hover:underline" %>
-            <%= link_to "Delete", room.tenancies.last, method: :delete, data: { confirm: "Are you sure?" }, class: "text-red-600 hover:underline" %>
+            <%= link_to "Show", latest_tenancy, class: "text-blue-600 hover:underline" %>
+            <%= link_to "Edit", edit_tenancy_path(latest_tenancy), class: "text-yellow-600 hover:underline" %>    
+            <%= link_to "Room Empty", latest_tenancy, method: :delete, data: { confirm: "Are you sure?" }, class: "text-red-600 hover:underline" %>
           <% end %>
         </td>
       </tr>
