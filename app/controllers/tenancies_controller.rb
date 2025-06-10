@@ -4,6 +4,7 @@ class TenanciesController < ApplicationController
   # GET /tenancies or /tenancies.json
   def index
     @tenancies = Tenancy.all
+    @rooms = Room.all
   end
 
   # GET /tenancies/1 or /tenancies/1.json

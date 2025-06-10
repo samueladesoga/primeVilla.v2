@@ -3,8 +3,8 @@
 <table class="min-w-full table-auto border-collapse border border-gray-300">
   <thead class="bg-gray-100">
     <tr>
-      <th class="border px-4 py-2">Tenant</th>
       <th class="border px-4 py-2">Room</th>
+      <th class="border px-4 py-2">Tenant</th>
       <th class="border px-4 py-2">Start Date</th>
       <th class="border px-4 py-2">End Date</th>
       <th class="border px-4 py-2">Comments</th>
@@ -13,17 +13,20 @@
   </thead>
 
   <tbody>
-    <% @tenancies.each do |tenancy| %>
+    <% @rooms.each do |room| %>
       <tr>
-        <td class="border px-4 py-2"><%= tenancy.user&.first_name || "N/A" %></td>
-        <td class="border px-4 py-2"><%= tenancy.room&.name || "N/A" %></td>
-        <td class="border px-4 py-2"><%= tenancy.start_date %></td>
-        <td class="border px-4 py-2"><%= tenancy.end_date %></td>
-        <td class="border px-4 py-2"><%= tenancy.comments %></td>
+        <% latest_tenancy = room.tenancies.order(end_date: :desc).first %>
+        <td class="border px-4 py-2"><%= latest_tenancy.nil? ? room.name : latest_tenancy.room&.name %></td>
+        <td class="border px-4 py-2"><%= latest_tenancy.nil? ? "Empty" : latest_tenancy.user&.name %></td>
+        <td class="border px-4 py-2"><%= latest_tenancy.nil? ? "Empty" : latest_tenancy.start_date %></td>
+        <td class="border px-4 py-2"><%= latest_tenancy.nil? ? "Empty" : latest_tenancy.end_date %></td>
+        <td class="border px-4 py-2"><%= latest_tenancy.nil? ? "Empty" : latest_tenancy.comments %></td>
         <td class="border px-4 py-2 space-x-2">
-          <%= link_to "Show", tenancy, class: "text-blue-600 hover:underline" %>
-          <%= link_to "Edit", edit_tenancy_path(tenancy), class: "text-yellow-600 hover:underline" %>
-          <%= link_to "Delete", tenancy, method: :delete, data: { confirm: "Are you sure?" }, class: "text-red-600 hover:underline" %>
+          <% unless latest_tenancy.nil? %>
+            <%= link_to "Show", room.tenancies.last, class: "text-blue-600 hover:underline" %>
+            <%= link_to "Edit", edit_tenancy_path(room.tenancies.last), class: "text-yellow-600 hover:underline" %>
+            <%= link_to "Delete", room.tenancies.last, method: :delete, data: { confirm: "Are you sure?" }, class: "text-red-600 hover:underline" %>
+          <% end %>
         </td>
       </tr>
     <% end %>
