@@ -59,12 +59,12 @@ class TenanciesController < ApplicationController
   end
 
   # DELETE /tenancies/1 or /tenancies/1.json
+  
   def destroy
     @tenancy.room.update!(is_empty: true)
-
     respond_to do |format|
       format.html { redirect_to tenancies_path, status: :see_other, notice: "#{room.name} is now empty" }
-      format.json { head :no_content }
+      format.turbo_stream
     end
   end
 

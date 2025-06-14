@@ -14,8 +14,8 @@
 
   <tbody>
     <% @rooms.each do |room| %>
-      <tr>
-        <% latest_tenancy = room.tenancies.order(end_date: :desc).first %>
+      <% latest_tenancy = room.tenancies.order(end_date: :desc).first %>
+      <tr id="<%= latest_tenancy.nil? ? "#" : dom_id(latest_tenancy) %>">
         <td class="border px-4 py-2"><%= room.is_empty? || latest_tenancy.nil? ? room.name : latest_tenancy.room&.name %></td>
         <td class="border px-4 py-2"><%= room.is_empty? || latest_tenancy.nil? ? "Empty" : latest_tenancy.user&.name %></td>
         <td class="border px-4 py-2"><%= room.is_empty? || latest_tenancy.nil? ? "Empty" : latest_tenancy.start_date %></td>
