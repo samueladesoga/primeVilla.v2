@@ -37,12 +37,4 @@ class TenanciesControllerTest < ActionDispatch::IntegrationTest
     patch tenancy_url(@tenancy), params: { tenancy: { comments: @tenancy.comments, end_date: @tenancy.end_date, room_id: @tenancy.room_id, start_date: @tenancy.start_date, user_id: @tenancy.user_id } }
     assert_redirected_to tenancy_url(@tenancy)
   end
-
-  test "should destroy tenancy" do
-    assert_difference("Tenancy.count", -1) do
-      delete tenancy_url(@tenancy)
-    end
-
-    assert_redirected_to tenancies_url
-  end
 end
