@@ -63,7 +63,7 @@ class TenanciesController < ApplicationController
   def destroy
     @tenancy.room.update!(is_empty: true)
     respond_to do |format|
-      format.html { redirect_to tenancies_path, status: :see_other, notice: "#{room.name} is now empty" }
+      format.html { redirect_to tenancies_path, status: :see_other, notice: "#{@tenancy.room.name} is now empty" }
       format.turbo_stream
     end
   end

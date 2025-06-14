@@ -1,0 +1,9 @@
+<%= turbo_stream.replace @tenancy do %>
+  <tr id="#">
+    <td class="border px-4 py-2"><%= @tenancy.room&.name %></td>
+    <td class="border px-4 py-2">Empty</td>
+    <td class="border px-4 py-2">Empty</td>
+    <td class="border px-4 py-2">Empty</td>
+    <td class="border px-4 py-2">Empty</td>
+  </tr>
+<% end %>

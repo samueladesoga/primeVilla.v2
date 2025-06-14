@@ -13,13 +13,13 @@ class Tenancy < ApplicationRecord
   end
 
   def no_overlap_for_room
-    if overlapping_tenancies.where(room_id: room_id).exists?
+    if overlapping_tenancies.where(room_id: room_id).exists? && !room.is_empty
       errors.add(:room_id, "is already occupied during this period")
     end
   end
 
   def no_overlap_for_user
-    if overlapping_tenancies.where(user_id: user_id).exists?
+    if overlapping_tenancies.where(user_id: user_id).exists? && !room.is_empty
       errors.add(:user_id, "already has a room during this period")
     end
   end
