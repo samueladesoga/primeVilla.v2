@@ -25,8 +25,11 @@
           <% unless latest_tenancy.nil? || latest_tenancy.room.is_empty? %>
             <%= link_to "Show", latest_tenancy, class: "text-blue-600 hover:underline" %>
             <%= link_to "Edit", edit_tenancy_path(latest_tenancy), class: "text-yellow-600 hover:underline" %>    
-            <%= button_to tenancy_path(latest_tenancy), method: :delete, data: { turbo_confirm: "Mark room as empty?" }, class: "btn btn-danger" do %>
-                End Tenancy
+            <%= button_to tenancy_path(latest_tenancy), method: :delete,
+              data: { turbo_confirm: "Mark room as empty?" },
+              form: { data: { turbo_stream: true } },
+              class: "btn btn-danger" do %>
+            End Tenancy
             <% end %>
           <% end %>
         </td>
