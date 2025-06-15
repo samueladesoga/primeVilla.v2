@@ -1,0 +1,37 @@
+<h1 class="font-bold text-4xl">Tenancy Snapshot</h1>
+<p>List of Empty Rooms</p>
+<ul>
+<% @rooms.filter { |room| room.is_empty? }.each do |room| %>
+    <li>
+    <strong>Room Name:</strong> <%= room.name %><br>
+    </li>
+<% end %>
+<ul>
+
+<h2 class="text-2xl font-bold mb-3">Out Dated Tenancies</h1>
+
+<table class="min-w-full table-auto border-collapse border border-gray-300">
+    <thead class="bg-gray-100">
+        <tr>
+        <th class="border px-4 py-2">Room</th>
+        <th class="border px-4 py-2">Tenant</th>
+        <th class="border px-4 py-2">Start Date</th>
+        <th class="border px-4 py-2">End Date</th>
+        <th class="border px-4 py-2">Comments</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <% @rooms.each do |room| %>
+        <% latest_tenancy = room.tenancies.order(end_date: :desc).first %>
+        <% next if latest_tenancy.nil? || latest_tenancy.end_date >= Date.today %>
+        <tr>
+            <td class="border px-4 py-2"><%= room.is_empty? || latest_tenancy.nil? ? room.name : latest_tenancy.room&.name %></td>
+            <td class="border px-4 py-2"><%= room.is_empty? || latest_tenancy.nil? ? "Empty" : latest_tenancy.user&.name %></td>
+            <td class="border px-4 py-2"><%= room.is_empty? || latest_tenancy.nil? ? "Empty" : latest_tenancy.start_date %></td>
+            <td class="border px-4 py-2"><%= room.is_empty? || latest_tenancy.nil? ? "Empty" : latest_tenancy.end_date %></td>
+            <td class="border px-4 py-2"><%= room.is_empty? || latest_tenancy.nil? ? "Empty" : latest_tenancy.comments %></td>
+        </tr>
+        <% end %>
+    </tbody>
+</table>
