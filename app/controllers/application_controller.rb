@@ -11,4 +11,10 @@ class ApplicationController < ActionController::Base
   def user_signed_in?
     current_user.present?
   end
+
+  def require_admin
+    unless Current.user.present? && Current.user.admin?
+      redirect_to root_path, alert: "Access denied"
+    end
+end
 end

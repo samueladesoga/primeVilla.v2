@@ -1,6 +1,7 @@
 class RegistrationsController < ApplicationController
     allow_unauthenticated_access only: %i[new create]
     before_action :resume_session, only: %i[new create]
+    before_action :require_admin, only: [:new, :create]
   
     def new
       @user = User.new

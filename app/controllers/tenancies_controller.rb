@@ -1,4 +1,5 @@
 class TenanciesController < ApplicationController
+  before_action :require_admin
   before_action :set_tenancy, only: %i[ show edit update destroy ]
 
   # GET /tenancies or /tenancies.json
