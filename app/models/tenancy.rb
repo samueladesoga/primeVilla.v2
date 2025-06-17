@@ -4,8 +4,8 @@ class Tenancy < ApplicationRecord
  
   validates :start_date, presence: true
   validates :end_date, presence: true
-  validate :no_overlap_for_room
-  validate :no_overlap_for_user
+  validate :no_overlap_for_room, on: :create
+  validate :no_overlap_for_user, on: :create
 
   def overlapping_tenancies
     Tenancy.where.not(id: id)

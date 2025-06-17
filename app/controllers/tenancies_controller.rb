@@ -48,12 +48,15 @@ class TenanciesController < ApplicationController
   def update
     respond_to do |format|
       ActiveRecord::Base.transaction do
+        @tenancy.assign_attributes(tenancy_params)
         if @tenancy.save
           @tenancy.room.update!(is_empty: false) if @tenancy.room.present?
           format.html { redirect_to @tenancy, notice: "Tenancy was successfully updated." }
+          format.json { render :show, status: :updated, location: @tenancy }
         else
           raise ActiveRecord::Rollback
           format.html { render :edit, status: :unprocessable_entity }
+          format.json { render json: @tenancy.errors, status: :unprocessable_entity }
         end
       end
     end
