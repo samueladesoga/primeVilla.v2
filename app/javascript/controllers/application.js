@@ -1,11 +1,9 @@
 import { Application } from "@hotwired/stimulus"
-import { definitionsFromContext } from "@hotwired/stimulus-importmap-autoloader"
+import DatePickerController from "./date_picker_controller"
 
 const application = Application.start()
-application.load(definitionsFromContext("controllers"))
-
-// Configure Stimulus development experience
+application.register("date-picker", DatePickerController)
 application.debug = false
-window.Stimulus   = application
+window.Stimulus = application
 
 export { application }
