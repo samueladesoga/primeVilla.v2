@@ -1,0 +1,21 @@
+<h1><%= @tenancy.user.name %> Tenancy Agreement Registered/h1>
+<p>
+  Your Tenancy agreement has been registered in our System<br>
+  To login, please use the following credentials:<br>
+  Login URL: <%= login_url %><br>
+  Email: <%= @tenancy.user.email_address %>.<br> and your password would have been sent to your email earlier. 
+  If you are unable to remember password. You can also reset your password from the login page.
+</p>
+
+<p>
+  Tenancy Start Date: <%= @tenancy.start_date %><br>
+  Tenancy End Date: <%= @tenancy.end_date %><br>
+</p>
+<p>
+  If you have any questions or need assistance, please feel free to reach out to the hostel management team.
+</p>
+<p>Thank you and we wish you a pleasant stay at the Hostel</p>
+
+<p>Many Regards, <br> 
+SS Hall Hostel Management Team</p>
+</p>

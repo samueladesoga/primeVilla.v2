@@ -32,6 +32,7 @@ class TenanciesController < ApplicationController
           @tenancy.save!
           @tenancy.room.update!(is_empty: false)
         end
+        UserMailer.with(tenancy: @tenancy).tenancy_created.deliver_later
         format.html { redirect_to @tenancy, notice: "Tenancy was successfully created." }
         format.json { render :show, status: :created, location: @tenancy }
       rescue ActiveRecord::RecordInvalid => e

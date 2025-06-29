@@ -11,6 +11,8 @@
 /.env*
 
 # Ignore all logfiles and tempfiles.
+.DS_Store
+app/.DS_Store
 /log/*
 /tmp/*
 !/log/.keep
