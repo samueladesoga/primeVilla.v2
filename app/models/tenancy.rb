@@ -7,6 +7,15 @@ class Tenancy < ApplicationRecord
   validate :no_overlap_for_room, on: :create
   validate :no_overlap_for_user, on: :create
 
+  
+  def expires_within_a_month?
+    (end_date >= Date.today) && (end_date <= Date.today + 30.days)
+  end
+
+  def expired?
+    end_date < Date.today
+  end
+
   def overlapping_tenancies
     Tenancy.where.not(id: id)
            .where("(start_date <= ?) AND (end_date >= ?)", end_date, start_date)
