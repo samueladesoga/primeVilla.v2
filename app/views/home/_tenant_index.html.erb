@@ -7,8 +7,8 @@
       <% Current.user.tenancies.order(end_date: :desc).each do |tenancy| %>
           <li>
             <strong>Room:</strong> <%= tenancy.room.name %><br>
-            <strong>Start Date:</strong> <%= tenancy.start_date %><br>
-            <strong>End Date:</strong> <%= tenancy.end_date %>
+            <strong>Start Date:</strong> <%= l(tenancy.start_date) %><br>
+            <strong>End Date:</strong> <%= l(tenancy.end_date) %>
           </li>
         <% end %>
     <% end %>

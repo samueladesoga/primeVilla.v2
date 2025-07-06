@@ -28,4 +28,8 @@
 #       enabled: "ON"
 
 en:
-  hello: "Hello world"
+  date:
+    formats:
+      default: "%d %b %Y"        # e.g. “06 Jul 2025”
+      long:    "%d %B %Y"        # e.g. “06 July 2025”
+

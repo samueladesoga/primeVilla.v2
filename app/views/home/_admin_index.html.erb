@@ -28,8 +28,8 @@
         <tr>
             <td class="border px-4 py-2"><%= room.is_empty? || latest_tenancy.nil? ? room.name : latest_tenancy.room&.name %></td>
             <td class="border px-4 py-2"><%= room.is_empty? || latest_tenancy.nil? ? "Empty" : latest_tenancy.user&.name %></td>
-            <td class="border px-4 py-2"><%= room.is_empty? || latest_tenancy.nil? ? "Empty" : latest_tenancy.start_date %></td>
-            <td class="border px-4 py-2"><%= room.is_empty? || latest_tenancy.nil? ? "Empty" : latest_tenancy.end_date %></td>
+            <td class="border px-4 py-2"><%= room.is_empty? || latest_tenancy.nil? ? "Empty" : l(latest_tenancy.start_date) %></td>
+            <td class="border px-4 py-2"><%= room.is_empty? || latest_tenancy.nil? ? "Empty" : l(latest_tenancy.end_date) %></td>
             <td class="border px-4 py-2"><%= room.is_empty? || latest_tenancy.nil? ? "Empty" : latest_tenancy.comments %></td>
         </tr>
         <% end %>

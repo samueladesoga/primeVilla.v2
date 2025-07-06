@@ -26,8 +26,8 @@
                 <tr class="border-b border-gray-100 dark:border-gray-800" id="<%= latest_tenancy.nil? ? "#" : dom_id(latest_tenancy) %>">
                   <td class="px-5 py-4 sm:px-6"><%= room.is_empty? || latest_tenancy.nil? ? room.name : latest_tenancy.room&.name %></td>
                   <td class="px-5 py-4 sm:px-6"><%= room.is_empty? || latest_tenancy.nil? ? "Empty" : latest_tenancy.user&.name %></td>
-                  <td class="px-5 py-4 sm:px-6"><%= room.is_empty? || latest_tenancy.nil? ? "Empty" : latest_tenancy.start_date %></td>
-                  <td class="px-5 py-4 sm:px-6"><%= room.is_empty? || latest_tenancy.nil? ? "Empty" : latest_tenancy.end_date %></td>
+                  <td class="px-5 py-4 sm:px-6"><%= room.is_empty? || latest_tenancy.nil? ? "Empty" : l(latest_tenancy.start_date) %></td>
+                  <td class="px-5 py-4 sm:px-6"><%= room.is_empty? || latest_tenancy.nil? ? "Empty" : l(latest_tenancy.end_date) %></td>
                   <td class="px-5 py-4 sm:px-6"><%= room.is_empty? || latest_tenancy.nil? ? "Empty" : latest_tenancy.comments %></td>
                   <td class="px-5 py-4 sm:px-6 space-x-2">
                     <% unless latest_tenancy.nil? || latest_tenancy.room.is_empty? %>
