@@ -8,10 +8,12 @@ namespace :rent_expiring do
     end.compact
    latest_tenancies.each do |tenancy|
       if tenancy.expires_within_a_month?
-        UserMailer.with(tenancy.user.id, tenancy.end_date.strftime('%a, %e %b %Y')).rent_due.deliver_later
+        UserMailer.with(user_id: tenancy.user.id, tenancy_end_date: tenancy.end_date.strftime('%a, %e %b %Y')).rent_due_soon.deliver_later
+        puts "Processing tenancy for user: #{tenancy.user.name} in room: #{tenancy.room.name} with end date: #{tenancy.end_date}"
       elsif tenancy.expired?
         elapsed_days = (today - tenancy.end_date.to_date).to_i
-        UserMailer.with(tenancy.user.id, tenancy.end_date.strftime('%a, %e %b %Y'), elapsed_days).rent_over_due.deliver_later
+        UserMailer.with(user_id: tenancy.user.id, tenancy_end_date: tenancy.end_date.strftime('%a, %e %b %Y'), elapsed_days: elapsed_days).rent_over_due.deliver_later
+        puts "Processing tenancy for user: #{tenancy.user.name} in room: #{tenancy.room.name} with end date: #{tenancy.end_date}"
       end
     end
   end

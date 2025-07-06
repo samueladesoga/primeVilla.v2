@@ -10,7 +10,7 @@ class UserMailer < ApplicationMailer
     mail(to: @tenancy.user.email_address, subject: "Tenancy Created on SS Hall Hostel Management System")
   end
 
-  	def rent_due(user_id, tenancy_end_date)
+  	def rent_due_soon(user_id, tenancy_end_date)
 	  	user = User.find(user_id)
 	    @email = user.email
 		  @tenancy_end_date = tenancy_end_date
