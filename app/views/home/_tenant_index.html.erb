@@ -1,15 +1,18 @@
   <h1 class="font-bold text-4xl">Tenancy Record</h1>
-  <p>List of all Tenancy Records</p>
+  <p>List of your Tenancy Records</p>
   <ul>
     <% if Current.user.tenancies.empty? %>
       <li>No tenancies found.</li>
     <% else %>
       <% Current.user.tenancies.order(end_date: :desc).each do |tenancy| %>
+        <div class="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
           <li>
-            <strong>Room:</strong> <%= tenancy.room.name %><br>
+            <strong> <%= tenancy.room.name %></strong><br>
             <strong>Start Date:</strong> <%= l(tenancy.start_date) %><br>
             <strong>End Date:</strong> <%= l(tenancy.end_date) %>
           </li>
+        </div>
+        <br>
         <% end %>
     <% end %>
   </ul>
