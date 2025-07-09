@@ -16,29 +16,32 @@
 <div class="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
     <h2 class="text-2xl font-bold mb-3">Out Dated Tenancies</h2>
 
-    <table class="min-w-full table-auto border-collapse border border-gray-300">
-        <thead class="bg-gray-100">
-            <tr>
-            <th class="border px-4 py-2">Room</th>
-            <th class="border px-4 py-2">Tenant</th>
-            <th class="border px-4 py-2">Start Date</th>
-            <th class="border px-4 py-2">End Date</th>
-            <th class="border px-4 py-2">Comments</th>
+    <div class="border border-gray-200 bg-white rounded-xl overflow-hidden mt-4">
+      <div class="max-w-full overflow-x-auto custom-scrollbar">
+        <table class="w-full min-w-[700px]">
+          <thead class="bg-gray-100">
+            <tr class="border-b border-gray-100">
+              <th class="px-5 py-3 text-left sm:px-6"><p class="font-medium text-black-500 text-theme-xs">Room</p></th>
+              <th class="px-5 py-3 text-left sm:px-6"><p class="font-medium text-black-500 text-theme-xs">Tenant</p></th>
+              <th class="px-5 py-3 text-left sm:px-6"><p class="font-medium text-black-500 text-theme-xs">Start Date</p></th>
+              <th class="px-5 py-3 text-left sm:px-6"><p class="font-medium text-black-500 text-theme-xs">End Date</p></th>
+              <th class="px-5 py-3 text-left sm:px-6"><p class="font-medium text-black-500 text-theme-xs">Comments</p></th>
             </tr>
-        </thead>
-
-        <tbody>
+          </thead>
+          <tbody>
             <% @rooms.each do |room| %>
-            <% latest_tenancy = room.tenancies.order(end_date: :desc).first %>
-            <% next if latest_tenancy.nil? || latest_tenancy.end_date >= Date.today %>
-            <tr>
-                <td class="border px-4 py-2"><%= room.is_empty? || latest_tenancy.nil? ? room.name : latest_tenancy.room&.name %></td>
-                <td class="border px-4 py-2"><%= room.is_empty? || latest_tenancy.nil? ? "Empty" : latest_tenancy.user&.name %></td>
-                <td class="border px-4 py-2"><%= room.is_empty? || latest_tenancy.nil? ? "Empty" : l(latest_tenancy.start_date) %></td>
-                <td class="border px-4 py-2"><%= room.is_empty? || latest_tenancy.nil? ? "Empty" : l(latest_tenancy.end_date) %></td>
-                <td class="border px-4 py-2"><%= room.is_empty? || latest_tenancy.nil? ? "Empty" : latest_tenancy.comments %></td>
-            </tr>
+              <% latest_tenancy = room.tenancies.order(end_date: :desc).first %>
+              <% next if latest_tenancy.nil? || latest_tenancy.end_date >= Date.today %>
+              <tr class="border-b border-gray-100">
+                <td class="px-5 py-4 sm:px-6"><%= room.is_empty? || latest_tenancy.nil? ? room.name : latest_tenancy.room&.name %></td>
+                <td class="px-5 py-4 sm:px-6"><%= room.is_empty? || latest_tenancy.nil? ? "Empty" : latest_tenancy.user&.name %></td>
+                <td class="px-5 py-4 sm:px-6"><%= room.is_empty? || latest_tenancy.nil? ? "Empty" : l(latest_tenancy.start_date) %></td>
+                <td class="px-5 py-4 sm:px-6"><%= room.is_empty? || latest_tenancy.nil? ? "Empty" : l(latest_tenancy.end_date) %></td>
+                <td class="px-5 py-4 sm:px-6"><%= room.is_empty? || latest_tenancy.nil? ? "Empty" : latest_tenancy.comments %></td>
+              </tr>
             <% end %>
-        </tbody>
-    </table>
+          </tbody>
+        </table>
+      </div>
+    </div>
 </div>

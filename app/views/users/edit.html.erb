@@ -4,42 +4,38 @@
       <h1 class="font-bold text-2xl">Update User</h1>
       <%= form_with(model: @user, data: { turbo: false }, class: "shadow-md rounded px-8 pt-6 pb-8 mb-4") do |form| %>
         <% if @user.errors.any? %>
-            <div class="error-messages">
+          <div class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
             <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from saving:</h2>
-            <ul>
-                <% @user.errors.full_messages.each do |msg| %>
+            <ul class="list-disc ml-6">
+              <% @user.errors.full_messages.each do |msg| %>
                 <li><%= msg %></li>
-                <% end %>
+              <% end %>
             </ul>
-            </div>
+          </div>
         <% end %>
         <div class="my-5">
           <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "Enter your email address", value: @user.email_address, class: "block shadow rounded-md border border-gray-400 focus:outline-orange-600 px-3 py-2 mt-2 w-full" %>
         </div>
-
         <div class="my-5">
           <%= form.text_field :first_name, required: true, autofocus: true, autocomplete: "First Name", placeholder: "Enter your first name", value: @user.first_name, class: "block shadow rounded-md border border-gray-400 focus:outline-orange-600 px-3 py-2 mt-2 w-full" %>
         </div>
-
         <div class="my-5">
           <%= form.text_field :last_name, required: true, autofocus: true, autocomplete: "Last Name", placeholder: "Enter your last name", value: @user.last_name, class: "block shadow rounded-md border border-gray-400 focus:outline-orange-600 px-3 py-2 mt-2 w-full" %>
         </div>
-
         <div class="my-5">
           <%= form.text_field :phone_number, required: true, autofocus: true, autocomplete: "phone", placeholder: "Enter your phone number", value: @user.phone_number, class: "block shadow rounded-md border border-gray-400 focus:outline-orange-600 px-3 py-2 mt-2 w-full" %>
         </div>
-
         <div class="my-5">
           <%= form.text_field :parent_name, autofocus: true, autocomplete: "Parent Name", placeholder: "Enter your parent name", value: @user.parent_name, class: "block shadow rounded-md border border-gray-400 focus:outline-orange-600 px-3 py-2 mt-2 w-full" %>
         </div>
-
         <div class="my-5">
           <%= form.text_field :parent_phone_number, autofocus: true, autocomplete: "Parent's Phone Number", placeholder: "Enter your parent's phone number", value: @user.parent_phone_number, class: "block shadow rounded-md border border-gray-400 focus:outline-orange-600 px-3 py-2 mt-2 w-full" %>
         </div>
-
         <div class="col-span-6 sm:flex sm:items-center sm:gap-4">
           <div class="flex w-full items-center justify-between">
-            <%= form.submit "Update", class: "rounded-lg py-2 px-6 bg-orange-600 text-white inline-block font-medium cursor-pointer" %>
+            <div class="inline">
+              <%= form.submit "Update", class: "rounded-lg py-2 px-6 bg-yellow-800 text-white inline-block font-medium cursor-pointer" %>
+            </div>
           </div>
         </div>
       <% end %>

@@ -1,44 +1,47 @@
-<%= form_with(model: tenancy, local: true, class: "space-y-6 max-w-xl mx-auto p-6 bg-white rounded-xl shadow") do |form| %>
-  <% if tenancy.errors.any? %>
-    <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4">
-      <h2 class="font-semibold">Please fix the following:</h2>
-      <ul class="list-disc list-inside">
-        <% tenancy.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
+
+<div class="mt-24">
+  <div class="max-w-2xl mx-auto md:w-2/3 w-full">
+    <div class="px-6 py-4 border border-gray-300 rounded-xl">
+      <h1 class="font-bold text-2xl">Tenancy</h1>
+      <%= form_with(model: tenancy, local: true, class: "shadow-md rounded px-8 pt-6 pb-8 mb-4") do |form| %>
+        <% if tenancy.errors.any? %>
+          <div class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
+            <h2><%= pluralize(tenancy.errors.count, "error") %> prohibited this tenancy from being saved:</h2>
+            <ul class="list-disc ml-6">
+              <% tenancy.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
         <% end %>
-      </ul>
+        <div class="my-5">
+          <%= form.label :user_id, "Tenant" %>
+          <%= form.collection_select :user_id, User.all, :id, :name, { prompt: "Select a user" }, { class: "block shadow rounded-md border border-gray-400 focus:outline-orange-600 px-3 py-2 mt-2 w-full" } %>
+        </div>
+        <div class="my-5">
+          <%= form.label :room_id, "Room" %>
+          <%= form.collection_select :room_id, Room.all, :id, :name, { prompt: "Select a room" }, { class: "block shadow rounded-md border border-gray-400 focus:outline-orange-600 px-3 py-2 mt-2 w-full" } %>
+        </div>
+        <div class="my-5">
+          <%= form.label :start_date %>
+          <%= form.text_field :start_date, placeholder: "Select a Tenancy Start Date", class: "block shadow rounded-md border border-gray-400 focus:outline-orange-600 px-3 py-2 mt-2 w-full", data: { controller: "date-picker" } %>
+        </div>
+        <div class="my-5">
+          <%= form.label :end_date %>
+          <%= form.date_field :end_date, placeholder: "Select a Tenancy End Date", class: "block shadow rounded-md border border-gray-400 focus:outline-orange-600 px-3 py-2 mt-2 w-full", data: { controller: "date-picker" } %>
+        </div>
+        <div class="my-5">
+          <%= form.label :comments, "Notes" %>
+          <%= form.text_area :comments, rows: 4, class: "block shadow rounded-md border border-gray-400 focus:outline-orange-600 px-3 py-2 mt-2 w-full" %>
+        </div>
+        <div class="col-span-6 sm:flex sm:items-center sm:gap-4">
+          <div class="flex w-full items-center justify-between">
+            <div class="inline">
+              <%= form.submit class: "rounded-lg py-2 px-6 bg-yellow-800 text-white inline-block font-medium cursor-pointer" %>
+            </div>
+          </div>
+        </div>
+      <% end %>
     </div>
-  <% end %>
-
-  <div>
-    <%= form.label :user_id, "Tenant", class: "block text-sm font-medium text-gray-700" %>
-    <%= form.collection_select :user_id, User.all, :id, :name, { prompt: "Select a user" },
-          { class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm" } %>
   </div>
-
-  <div>
-    <%= form.label :room_id, "Room", class: "block text-sm font-medium text-gray-700" %>
-    <%= form.collection_select :room_id, Room.all, :id, :name, { prompt: "Select a room" },
-          { class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm" } %>
-  </div>
-
-<div>  
-  <%= form.label :start_date, class: "block text-sm font-medium text-gray-700" %>
-  <%= form.text_field :start_date, placeholder: "Select a Tenancy Start Date", class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm", data: { controller: "date-picker" } %>
 </div>
-
-<div>
-  <%= form.label :end_date, class: "block text-sm font-medium text-gray-700" %>
-  <%= form.date_field :end_date, placeholder: "Select a Tenancy End Date", class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm", data: { controller: "date-picker" } %>
-</div>
-
-
-  <div>
-    <%= form.label :comments, "Notes", class: "block text-sm font-medium text-gray-700" %>
-    <%= form.text_area :comments, rows: 4, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm" %>
-  </div>
-
-  <div>
-    <%= form.submit class: "inline-flex justify-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700" %>
-  </div>
-<% end %>
