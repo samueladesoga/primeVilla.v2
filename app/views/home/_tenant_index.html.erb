@@ -1,11 +1,10 @@
-  <h1 class="font-bold text-4xl">Tenancy Record</h1>
-  <p>List of your Tenancy Records</p>
+  <h1 class="font-bold text-4xl m-10">Tenancy Record</h1>
   <ul>
     <% if Current.user.tenancies.empty? %>
       <li>No tenancies found.</li>
     <% else %>
       <% Current.user.tenancies.order(end_date: :desc).each do |tenancy| %>
-        <div class="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-white-100 dark:bg-white-800 dark:border-gray-700">
+        <div class="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-white-100 dark:bg-white-800">
           <li>
             <strong> <%= tenancy.room.name %></strong><br>
             <strong>Start Date:</strong> <%= l(tenancy.start_date) %><br>
@@ -16,3 +15,13 @@
         <% end %>
     <% end %>
   </ul>
+
+
+  <div class="block p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-white-800 dark:border-green-700 mt-50">
+     <p>
+        Please do NOT pay any money to an agent. All rents should be paid directly to the account below:<br>
+          <strong>Account Name: Samuel Adesoga</strong><br>
+          <strong>Bank:</strong> Zenith Bank<br>
+          <strong>Account Number:</strong> 2283023374
+     </p>
+  </div>
