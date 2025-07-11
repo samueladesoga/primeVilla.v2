@@ -22,26 +22,35 @@
 
             <tbody>
               <% @rooms.each do |room| %>
-                <% latest_tenancy = room.tenancies.order(end_date: :desc).first %>
-                <tr class="border-b border-gray-100 dark:border-gray-800" id="<%= latest_tenancy.nil? ? "#" : dom_id(latest_tenancy) %>">
-                  <td class="px-5 py-4 sm:px-6"><%= room.is_empty? || latest_tenancy.nil? ? room.name : latest_tenancy.room&.name %></td>
-                  <td class="px-5 py-4 sm:px-6"><%= room.is_empty? || latest_tenancy.nil? ? "Empty" : latest_tenancy.user&.name %></td>
-                  <td class="px-5 py-4 sm:px-6"><%= room.is_empty? || latest_tenancy.nil? ? "Empty" : l(latest_tenancy.start_date) %></td>
-                  <td class="px-5 py-4 sm:px-6"><%= room.is_empty? || latest_tenancy.nil? ? "Empty" : l(latest_tenancy.end_date) %></td>
-                  <td class="px-5 py-4 sm:px-6"><%= room.is_empty? || latest_tenancy.nil? ? "Empty" : latest_tenancy.comments %></td>
-                  <td class="px-5 py-4 sm:px-6 space-x-2">
-                    <% unless latest_tenancy.nil? || latest_tenancy.room.is_empty? %>
-                      <%= link_to "Show", latest_tenancy, class: "text-blue-600 hover:underline" %>
-                      <%= link_to "Edit", edit_tenancy_path(latest_tenancy), class: "text-yellow-600 hover:underline" %>    
-                      <%= button_to tenancy_path(latest_tenancy), method: :delete,
-                        data: { turbo_confirm: "Mark room as empty?" },
-                        form: { data: { turbo_stream: true } },
-                        class: "btn btn-danger" do %>
-                      End Tenancy
-                      <% end %>
-                    <% end %>
-                  </td>
-                </tr>
+                <% active_tenancy = room.tenancies.find_by(is_active: true) %>
+                <% if active_tenancy %>
+                  <tr class="border-b border-gray-100 dark:border-gray-800" id="<%= dom_id(active_tenancy) %>">
+                    <td class="px-5 py-4 sm:px-6"><%=active_tenancy.room.name %></td>
+                    <td class="px-5 py-4 sm:px-6"><%= active_tenancy.user.name %></td>
+                    <td class="px-5 py-4 sm:px-6"><%= l(active_tenancy.start_date) %></td>
+                    <td class="px-5 py-4 sm:px-6"><%= l(active_tenancy.end_date) %></td>
+                    <td class="px-5 py-4 sm:px-6"><%= active_tenancy.comments %></td>
+                    <td class="px-5 py-4 sm:px-6 space-x-2">
+                        <%= link_to "Show", active_tenancy, class: "text-blue-600 hover:underline" %>
+                        <%= link_to "Edit", edit_tenancy_path(active_tenancy), class: "text-yellow-600 hover:underline" %>    
+                        <%= button_to tenancy_path(active_tenancy), method: :delete,
+                          data: { turbo_confirm: "Mark room as empty?" },
+                          form: { data: { turbo_stream: true } },
+                          class: "text-white bg-red-400 dark:bg-red-500 font-medium rounded-lg text-sm px-5 py-2.5 text-center" do %>
+                        End Tenancy
+                        <% end %>
+                    </td>
+                  </tr>
+                <% else %>
+                  <tr class="border-b border-gray-100 dark:border-gray-800" id="#">
+                    <td class="px-5 py-4 sm:px-6"><%= room.name %></td>
+                    <td class="px-5 py-4 sm:px-6">Empty</td>
+                    <td class="px-5 py-4 sm:px-6">Empty</td>
+                    <td class="px-5 py-4 sm:px-6">Empty</td>
+                    <td class="px-5 py-4 sm:px-6">Empty</td>
+                    <td class="px-5 py-4 sm:px-6 space-x-2"></td>
+                  </tr>
+                <% end %>
               <% end %>
             </tbody>
           </table>

@@ -4,7 +4,6 @@ class TenanciesController < ApplicationController
 
   # GET /tenancies or /tenancies.json
   def index
-    @tenancies = Tenancy.all
     @rooms = Room.all
   end
 
@@ -49,9 +48,10 @@ class TenanciesController < ApplicationController
   def update
     respond_to do |format|
       ActiveRecord::Base.transaction do
+        
         @tenancy.assign_attributes(tenancy_params)
         if @tenancy.save
-          @tenancy.room.update!(is_empty: false) if @tenancy.room.present?
+          @tenancy.update!(is_active: true)
           format.html { redirect_to @tenancy, notice: "Tenancy was successfully updated." }
           format.json { render :show, status: :updated, location: @tenancy }
         else
@@ -66,7 +66,7 @@ class TenanciesController < ApplicationController
   # DELETE /tenancies/1 or /tenancies/1.json
   
   def destroy
-    @tenancy.room.update!(is_empty: true)
+    @tenancy.update!(is_active: false)
     respond_to do |format|
       format.turbo_stream
       format.html { redirect_to tenancies_path, status: :see_other, notice: "#{@tenancy.room.name} is now empty" }
@@ -81,6 +81,6 @@ class TenanciesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def tenancy_params
-      params.expect(tenancy: [ :user_id, :room_id, :start_date, :end_date, :comments ])
+      params.expect(tenancy: [ :user_id, :room_id, :start_date, :end_date, :comments, :is_active ])
     end
 end

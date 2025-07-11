@@ -3,7 +3,7 @@
 <div class="block p-6 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-white-100 dark:bg-white-800 dark:border-gray-700">
     <h2 class="text-2xl font-bold mb-3">Empty Rooms</h2>
     <ul>
-    <% @rooms.filter { |room| room.is_empty? }.each do |room| %>
+    <% @vacant_rooms.each do |room| %>
         <li>
         <strong> <%= room.name %> </strong><br>
         </li>
@@ -29,16 +29,20 @@
             </tr>
           </thead>
           <tbody>
-            <% @rooms.filter { |room| !room.is_empty? }.each do |room| %>
-              <% latest_tenancy = room.tenancies.order(end_date: :desc).first %>
-              <% next if latest_tenancy.nil? || latest_tenancy.end_date >= Date.today %>
+            <% if @active_tenancies_with_expired_rent.nil? %>
               <tr class="border-b border-gray-100">
-                <td class="px-5 py-4 sm:px-6"><%= room.is_empty? || latest_tenancy.nil? ? room.name : latest_tenancy.room&.name %></td>
-                <td class="px-5 py-4 sm:px-6"><%= room.is_empty? || latest_tenancy.nil? ? "Empty" : latest_tenancy.user&.name %></td>
-                <td class="px-5 py-4 sm:px-6"><%= room.is_empty? || latest_tenancy.nil? ? "Empty" : l(latest_tenancy.start_date) %></td>
-                <td class="px-5 py-4 sm:px-6"><%= room.is_empty? || latest_tenancy.nil? ? "Empty" : l(latest_tenancy.end_date) %></td>
-                <td class="px-5 py-4 sm:px-6"><%= room.is_empty? || latest_tenancy.nil? ? "Empty" : latest_tenancy.comments %></td>
-              </tr>
+                <td colspan="5" class="px-5 py-4 sm:px-6 text-center">No tenancies with expired rent</td>
+              </tr> 
+            <% else %>
+              <% @active_tenancies_with_expired_rent.each do |tenancy| %>
+                <tr class="border-b border-gray-100">
+                  <td class="px-5 py-4 sm:px-6"><%= tenancy.room.name %></td>
+                  <td class="px-5 py-4 sm:px-6"><%= tenancy.user.name %></td>
+                  <td class="px-5 py-4 sm:px-6"><%= l(tenancy.start_date) %></td>
+                  <td class="px-5 py-4 sm:px-6"><%= l(tenancy.end_date) %></td>
+                  <td class="px-5 py-4 sm:px-6"><%= tenancy.comments %></td>
+                </tr>
+              <% end %>
             <% end %>
           </tbody>
         </table>
