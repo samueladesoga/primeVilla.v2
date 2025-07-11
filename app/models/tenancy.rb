@@ -1,6 +1,8 @@
 class Tenancy < ApplicationRecord
   belongs_to :user
   belongs_to :room
+
+  scope :active_tenancy, -> { where(is_active: true) }
  
   validates :start_date, presence: true
   validates :end_date, presence: true
