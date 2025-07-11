@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  mount MissionControl::Jobs::Engine, at: "/jobs"
   resources :tenancies
   resources :rooms
   root to: "home#index"
