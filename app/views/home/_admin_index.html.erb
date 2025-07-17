@@ -29,12 +29,12 @@
             </tr>
           </thead>
           <tbody>
-            <% if @active_tenancies_with_expired_rent.nil? %>
+            <% if @active_tenancies_with_expired_rents.nil? %>
               <tr class="border-b border-gray-100">
                 <td colspan="5" class="px-5 py-4 sm:px-6 text-center">No tenancies with expired rent</td>
               </tr> 
             <% else %>
-              <% @active_tenancies_with_expired_rent.each do |tenancy| %>
+              <% @active_tenancies_with_expired_rents.each do |tenancy| %>
                 <tr class="border-b border-gray-100">
                   <td class="px-5 py-4 sm:px-6"><%= tenancy.room.name %></td>
                   <td class="px-5 py-4 sm:px-6"><%= tenancy.user.name %></td>

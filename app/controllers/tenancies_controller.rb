@@ -29,7 +29,6 @@ class TenanciesController < ApplicationController
       begin
         ActiveRecord::Base.transaction do
           @tenancy.save!
-          @tenancy.room.update!(is_empty: false)
         end
         UserMailer.with(tenancy: @tenancy).tenancy_created.deliver_later
         format.html { redirect_to @tenancy, notice: "Tenancy was successfully created." }
