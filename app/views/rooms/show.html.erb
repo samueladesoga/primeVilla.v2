@@ -22,8 +22,8 @@
         <% @room.tenancies.order(end_date: :desc).each do |tenancy| %>
           <tr class="border-b border-gray-100">
             <td class="px-5 py-4 sm:px-6"><%= tenancy.user&.name %></td>
-            <td class="px-5 py-4 sm:px-6"><%= tenancy.start_date %></td>
-            <td class="px-5 py-4 sm:px-6"><%= tenancy.end_date %></td>
+            <td class="px-5 py-4 sm:px-6"><%= l(tenancy.start_date) %></td>
+            <td class="px-5 py-4 sm:px-6"><%= l(tenancy.end_date) %></td>
             <td class="px-5 py-4 sm:px-6"><%= tenancy.comments %></td>
           </tr>
         <% end %>

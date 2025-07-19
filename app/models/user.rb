@@ -19,3 +19,4 @@ class User < ApplicationRecord
     "#{first_name} #{last_name}".strip
   end 
 end
+

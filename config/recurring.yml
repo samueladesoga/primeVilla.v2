@@ -3,7 +3,7 @@ monthly_job:
     args: "rent_expiring:send_emails_to_tenants"
     schedule: every month at 9am
 
-# test_job:
-#     class: RakeTaskJob
-#     args: "rent_expiring:send_emails_to_tenants"
-#     schedule: every 2 minutes
+test_job:
+    class: RakeTaskJob
+    args: "rent_expiring:send_emails_to_tenants"
+    schedule: every 2 minutes
