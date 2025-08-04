@@ -44,9 +44,7 @@ app/.DS_Store
 # Manually added
 # Ignore editor & environment-specific configs
 .vscode/
- 
-# Ignore deployment configs
-.kamal/
+
  
 # Ignore personal GitHub configs (if applicable)
 .github/
