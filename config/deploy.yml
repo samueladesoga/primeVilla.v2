@@ -3,7 +3,7 @@ image: samadesoga/prime_villa
 servers:
   web:
     hosts:
-      - root@195.201.147.221
+      - 195.201.147.221
 registry:
   username: samadesoga
   password:
