@@ -1,5 +1,5 @@
 service: prime_villa
-image: samadesoga/prime_villa:latest
+image: samadesoga/prime_villa
 
 env:
   clear:
@@ -9,5 +9,5 @@ volumes:
   - "/storage:/rails/storage"
 proxy:
   ssl: true
-  host: production.primevilla.com
+  host: prod.theprimevilla.com
   app_port: 3000

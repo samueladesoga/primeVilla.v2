@@ -1,7 +1,7 @@
 # Override service name so containers don’t collide
 service: prime_villa-staging
 # Tag your staging image
-image: samadesoga/prime_villa:staging
+image: samadesoga/prime_villa
 
 env:
   clear:
