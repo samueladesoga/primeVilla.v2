@@ -1,0 +1,13 @@
+service: prime_villa
+image: samadesoga/prime_villa:latest
+
+env:
+  clear:
+    RAILS_ENV: "production"
+volumes:
+  - "/db/production.sqlite3:/rails/db/production.sqlite3"
+  - "/storage:/rails/storage"
+proxy:
+  ssl: true
+  host: production.primevilla.com
+  app_port: 3000

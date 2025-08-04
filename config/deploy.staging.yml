@@ -1,0 +1,15 @@
+# Override service name so containers don’t collide
+service: prime_villa-staging
+# Tag your staging image
+image: samadesoga/prime_villa:staging
+
+env:
+  clear:
+    RAILS_ENV: "staging"
+volumes:
+  - "/db/staging.sqlite3:/rails/db/staging.sqlite3"
+  - "/storage:/rails/storage"
+proxy:
+  ssl: true
+  host: staging.primevilla.com
+  app_port: 3000
