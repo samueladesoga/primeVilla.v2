@@ -11,5 +11,5 @@ volumes:
   - "/storage:/rails/storage"
 proxy:
   ssl: true
-  host: staging.primevilla.com
+  host: staging.theprimevilla.com
   app_port: 3000
