@@ -11,6 +11,7 @@ registry:
 env:
   secret:
     - RAILS_MASTER_KEY
+    - KAMAL_REGISTRY_PASSWORD
 builder:
   arch:
       - amd64
