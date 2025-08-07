@@ -1,13 +1,11 @@
 #!/usr/bin/env bash
 set -e
 
-# Only run on staging (optional guard)
-if [[ "$KAMAL_DESTINATION" != "staging" ]]; then
-  exit 0
-fi
+# Only on staging
+[[ "$KAMAL_DESTINATION" == "staging" ]] || exit 0
 
-# Execute migrations in the primary web role
+# Run migrations inside the primary, running web container
 kamal app exec \
-  -d "$KAMAL_DESTINATION" \
+  -d staging \
   -p \
   -- rails db:prepare
