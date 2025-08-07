@@ -9,7 +9,7 @@ env:
 volumes:
   - "/db/staging.sqlite3:/rails/db/staging.sqlite3"
   - "/storage:/rails/storage"
-  - "/config/credentials/staging.key:/rails/config/master.key:ro"
+
 proxy:
   ssl: true
   host: staging.theprimevilla.com
