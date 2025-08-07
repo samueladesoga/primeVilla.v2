@@ -17,9 +17,3 @@ builder:
       - amd64
       - arm64
 # no proxy here—each env will set its own host
-hooks:
-  pre_deploy:
-    - name: "Run DB migrations"
-      run: |
-        # only run on the primary web role
-        VERSION=$KAMAL_VERSION kamal app exec -p "./bin/rails db:prepare"
