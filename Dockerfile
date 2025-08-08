@@ -18,4 +18,5 @@ COPY . .
 RUN bundle exec rails assets:precompile
 
 EXPOSE 3000
+ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 CMD ["bundle", "exec", "foreman", "start"]
