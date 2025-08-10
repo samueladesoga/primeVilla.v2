@@ -13,4 +13,4 @@ volumes:
 proxy:
   ssl: true
   host: staging.theprimevilla.com
-  app_port: 3000
+  app_port: 5000
