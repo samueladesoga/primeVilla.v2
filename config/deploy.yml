@@ -16,4 +16,7 @@ builder:
   arch:
       - amd64
       - arm64
-# no proxy here—each env will set its own host
+aliases:
+  shell: app exec -i --reuse "bash"
+  console: app exec -i --reuse "bin/rails console"
+  rake: app exec -i --reuse "bundle exec rake"
