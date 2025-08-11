@@ -1,0 +1,12 @@
+# config/cable.yml
+development:
+  adapter: async
+
+test:
+  adapter: test
+
+staging:
+  adapter: async   # or redis if you use it
+
+production:
+  adapter: async   # or redis if you use it
