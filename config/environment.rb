@@ -5,11 +5,10 @@ require_relative "application"
 Rails.application.initialize!
 
 ActionMailer::Base.smtp_settings = {
-  :user_name => "AKIAYF4JFVMXOL2ZSGWE",
-  :password =>   Rails.application.credentials.dig(:ses_api_key),
+  :user_name => "MS_yqIoRk@theprimevilla.com",
+  :password =>   Rails.application.credentials.dig(:mailersend_api_key),
   :domain => ENV["ROOT_URL"],
-  :address => 'email-smtp.us-east-1.amazonaws.com',
+  :address => 'smtp.mailersend.net',
   :port => 587,
-  :authentication => :plain,
-  :enable_starttls_auto => true
+  :starttls => true
 }
