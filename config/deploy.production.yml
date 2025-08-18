@@ -5,6 +5,7 @@ env:
   clear:
     RAILS_ENV: "production"
     ROOT_URL: http://crm.theprimevilla.com/
+    PORT: "5005"
 volumes:
   - "/db/production.sqlite3:/rails/db/production.sqlite3"
   - "/storage:/rails/storage"
