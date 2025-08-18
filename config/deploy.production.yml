@@ -4,10 +4,11 @@ image: samadesoga/prime_villa
 env:
   clear:
     RAILS_ENV: "production"
+    ROOT_URL: http://crm.theprimevilla.com/
 volumes:
   - "/db/production.sqlite3:/rails/db/production.sqlite3"
   - "/storage:/rails/storage"
 proxy:
   ssl: true
   host: prod.theprimevilla.com
-  app_port: 3000
+  app_port: 5005
