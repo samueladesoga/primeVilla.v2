@@ -1,2 +1,2 @@
 #!/bin/bash
-./bin/kamal app exec --primary --version=$KAMAL_VERSION --destination=$KAMAL_DESTINATION "./bin/rails db:prepare"
+#./bin/kamal app exec --primary --version=$KAMAL_VERSION --destination=$KAMAL_DESTINATION "./bin/rails db:prepare"
