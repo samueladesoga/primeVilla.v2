@@ -11,6 +11,7 @@ registry:
 env:
   secret:
     - RAILS_MASTER_KEY
+    - LITESTREAM_SECRET_ACCESS_KEY
 builder:
   arch:
       - amd64
