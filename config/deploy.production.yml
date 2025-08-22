@@ -11,5 +11,5 @@ volumes:
   - "/storage:/rails/storage"
 proxy:
   ssl: true
-  host: prod.theprimevilla.com
+  host: crm.theprimevilla.com
   app_port: 5005
