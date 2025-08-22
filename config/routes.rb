@@ -1,8 +1,7 @@
 Rails.application.routes.draw do
   mount MissionControl::Jobs::Engine, at: "/jobs"
-  authenticate :user, -> (user) { user.admin? } do
-    mount Litestream::Engine, at: "/litestream"
-  end
+  mount Litestream::Engine, at: "/litestream"
+  
   resources :tenancies
   resources :rooms
   root to: "home#index"

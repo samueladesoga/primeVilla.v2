@@ -33,6 +33,8 @@ Rails.application.configure do
 
   # Configure the default Litestream config path
   config.config_path = Rails.root.join("config", "litestream.yml")
+  config.litestream.username = Rails.application.credentials.dig(:mission_control, :http_basic_auth_user)
+  config.litestream.password = Rails.application.credentials.dig(:mission_control, :http_basic_auth_password)
 
   # Configure the Litestream dashboard
   #
