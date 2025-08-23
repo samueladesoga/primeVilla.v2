@@ -16,12 +16,13 @@
         <% end %>
         <%= form.hidden_field :is_active, value: true %>
         <div class="my-5">
+
           <%= form.label :user_id, "Tenant" %>
-          <%= form.collection_select :user_id, User.all.filter { |user| !user.admin? && !user.active_tenancy.present? }, :id, :name, { prompt: "Select a user" }, { class: "block shadow rounded-md border border-gray-400 focus:outline-orange-600 px-3 py-2 mt-2 w-full" } %>
+          <%= form.collection_select :user_id, User.all.filter { |user| !user.admin? }, :id, :name, { prompt: "Select a user" }, { class: "block shadow rounded-md border border-gray-400 focus:outline-orange-600 px-3 py-2 mt-2 w-full" } %>
         </div>
         <div class="my-5">
           <%= form.label :room_id, "Room" %>
-          <%= form.collection_select :room_id, Room.all.filter { |room| not room.active_tenancy.present? }, :id, :name, { prompt: "Select a room" }, { class: "block shadow rounded-md border border-gray-400 focus:outline-orange-600 px-3 py-2 mt-2 w-full" } %>
+          <%= form.collection_select :room_id, Room.all, :id, :name, { prompt: "Select a room" }, { class: "block shadow rounded-md border border-gray-400 focus:outline-orange-600 px-3 py-2 mt-2 w-full" } %>
         </div>
         <div class="my-5">
           <%= form.label :start_date %>
