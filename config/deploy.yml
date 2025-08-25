@@ -20,3 +20,4 @@ aliases:
   shell: app exec -i --reuse "bash"
   console: app exec -i --reuse "bin/rails console"
   rake: app exec -i --reuse "bundle exec rake"
+  logs: app logs -f
