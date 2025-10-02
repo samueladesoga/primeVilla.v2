@@ -17,7 +17,7 @@ dbs:
         path: storage/staging.sqlite3
         access-key-id: AKIAYF4JFVMXG2RQQHQ2
         secret-access-key: $LITESTREAM_SECRET_ACCESS_KEY
-        sync-interval: 2w
+        sync-interval: 240h
   - path: storage/staging_queue.sqlite3
     replicas:
       - type: s3
@@ -25,7 +25,7 @@ dbs:
         path: storage/staging_queue.sqlite3
         access-key-id: AKIAYF4JFVMXG2RQQHQ2
         secret-access-key: $LITESTREAM_SECRET_ACCESS_KEY
-        sync-interval: 2w
+        sync-interval: 240h
   - path: storage/production.sqlite3
     replicas:
       - type: s3
@@ -33,7 +33,7 @@ dbs:
         path: storage/production.sqlite3
         access-key-id: AKIAYF4JFVMXG2RQQHQ2
         secret-access-key: $LITESTREAM_SECRET_ACCESS_KEY
-        sync-interval: 2w
+        sync-interval: 240h
   - path: storage/production_queue.sqlite3
     replicas:
       - type: s3
@@ -41,4 +41,4 @@ dbs:
         path: storage/production_queue.sqlite3
         access-key-id: AKIAYF4JFVMXG2RQQHQ2
         secret-access-key: $LITESTREAM_SECRET_ACCESS_KEY
-        sync-interval: 2w
+        sync-interval: 240h
