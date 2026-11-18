@@ -14,6 +14,16 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_select "td", text: "Tolu One", count: 0
   end
 
+  test "index lists tenants in room order, with unassigned tenants last" do
+    room_ten = Room.create!(name: "Room 10")
+    Tenancy.create!(user: users(:three), room: room_ten, start_date: Date.current, end_date: Date.current + 365, is_active: true)
+    User.create!(email_address: "zero@example.com", password: "password", first_name: "Ade", last_name: "Zero")
+
+    get users_url
+    names = css_select("tbody tr td:first-child").map { |cell| cell.text.strip }
+    assert_equal [ "Tolu One", "Bisi Two", "Chidi Three", "Ade Zero" ], names
+  end
+
   test "show renders the tenant profile" do
     get user_url(users(:one))
     assert_response :success

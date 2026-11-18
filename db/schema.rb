@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_11_165628) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_18_220000) do
   create_table "rooms", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -37,8 +37,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_11_165628) do
     t.boolean "is_active", default: false, null: false
     t.index ["room_id", "start_date", "end_date"], name: "index_tenancies_on_room_id_and_start_date_and_end_date"
     t.index ["room_id"], name: "index_tenancies_on_room_id"
+    t.index ["room_id"], name: "index_tenancies_one_active_per_room", unique: true, where: "is_active = 1"
     t.index ["user_id", "start_date", "end_date"], name: "index_tenancies_on_user_id_and_start_date_and_end_date"
     t.index ["user_id"], name: "index_tenancies_on_user_id"
+    t.index ["user_id"], name: "index_tenancies_one_active_per_user", unique: true, where: "is_active = 1"
   end
 
   create_table "users", force: :cascade do |t|

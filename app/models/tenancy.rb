@@ -41,6 +41,15 @@ class Tenancy < ApplicationRecord
     :active
   end
 
+  # Ends the tenancy now. If the tenant moves out before the end date, the end
+  # date is brought forward to today so the room's history shows when it really
+  # became free, and the next tenancy in that room doesn't overlap this one.
+  def end!
+    attributes = { is_active: false }
+    attributes[:end_date] = [ Date.current, start_date + 1.day ].max if end_date > Date.current
+    update!(attributes)
+  end
+
   # Defaults for the tenancy that follows this one: same tenant and room,
   # starting when this one ends and lasting just as long.
   def renewal_attributes

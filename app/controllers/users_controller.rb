@@ -3,11 +3,12 @@ class UsersController < ApplicationController
   before_action :set_user, only: %i[ show edit update destroy ]
 
   def index
-    @users = User.tenants.includes(active_tenancy: :room).order(:first_name, :last_name)
+    @users = User.tenants.includes(active_tenancy: :room)
     if params[:q].present?
       query = "%#{User.sanitize_sql_like(params[:q].strip)}%"
       @users = @users.where("first_name LIKE :q OR last_name LIKE :q OR email_address LIKE :q OR phone_number LIKE :q", q: query)
     end
+    @users = sort_by_room(@users)
   end
 
   def show
@@ -35,6 +36,14 @@ class UsersController < ApplicationController
   end
 
   private
+    # Tenants in their room's order (Room 1 first); tenants without a room
+    # come last, by name.
+    def sort_by_room(users)
+      housed, unhoused = users.partition(&:active_tenancy)
+      housed.sort_by { |user| user.active_tenancy.room.sort_key } +
+        unhoused.sort_by { |user| user.name.downcase }
+    end
+
     def set_user
       @user = User.find(params[:id])
     end
