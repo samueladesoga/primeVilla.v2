@@ -47,7 +47,6 @@ app/.DS_Store
 
  
 # Ignore personal GitHub configs (if applicable)
-.github/
 
 /app/assets/builds/*
 !/app/assets/builds/.keep

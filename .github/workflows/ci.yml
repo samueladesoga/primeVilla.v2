@@ -1,0 +1,118 @@
+name: CI / Deploy
+
+# - Every pull request and push to main runs the checks.
+# - Pushes to main then deploy to staging automatically.
+# - Production deploys after staging, once approved in the "production"
+#   environment (Settings → Environments → production → Required reviewers).
+# - "Run workflow" in the Actions tab re-runs the whole pipeline on main.
+
+on:
+  pull_request:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+env:
+  RUBY_VERSION: "3.3.1" # keep in sync with ARG RUBY_VERSION in Dockerfile
+
+jobs:
+  scan_ruby:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ env.RUBY_VERSION }}
+          bundler-cache: true
+      - name: Scan for common Rails security vulnerabilities
+        run: bin/brakeman --no-pager
+
+  scan_js:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ env.RUBY_VERSION }}
+          bundler-cache: true
+      - name: Scan JavaScript dependencies
+        run: bin/importmap audit
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ env.RUBY_VERSION }}
+          bundler-cache: true
+      - name: Lint
+        run: bin/rubocop -f github
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ env.RUBY_VERSION }}
+          bundler-cache: true
+      - name: Build CSS
+        run: bin/rails tailwindcss:build
+      - name: Run tests
+        env:
+          RAILS_ENV: test
+        run: bin/rails db:test:prepare test
+
+  deploy_staging:
+    name: Deploy to staging
+    needs: [ scan_ruby, scan_js, lint, test ]
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    environment:
+      name: staging
+      url: https://staging.theprimevilla.com
+    concurrency:
+      group: deploy-staging
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/kamal-setup
+        with:
+          ruby-version: ${{ env.RUBY_VERSION }}
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: Write staging master key
+        env:
+          MASTER_KEY: ${{ secrets.RAILS_STAGING_KEY }}
+        run: printf '%s' "$MASTER_KEY" > config/credentials/staging.key
+      - name: Deploy
+        env:
+          KAMAL_REGISTRY_PASSWORD: ${{ secrets.KAMAL_REGISTRY_PASSWORD }}
+          LITESTREAM_SECRET_ACCESS_KEY: ${{ secrets.LITESTREAM_SECRET_ACCESS_KEY }}
+        run: bin/kamal deploy -d staging
+
+  deploy_production:
+    name: Deploy to production
+    needs: deploy_staging
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://crm.theprimevilla.com
+    concurrency:
+      group: deploy-production
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/kamal-setup
+        with:
+          ruby-version: ${{ env.RUBY_VERSION }}
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: Write production master key
+        env:
+          MASTER_KEY: ${{ secrets.RAILS_PRODUCTION_KEY }}
+        run: printf '%s' "$MASTER_KEY" > config/credentials/production.key
+      - name: Deploy
+        env:
+          KAMAL_REGISTRY_PASSWORD: ${{ secrets.KAMAL_REGISTRY_PASSWORD }}
+          LITESTREAM_SECRET_ACCESS_KEY: ${{ secrets.LITESTREAM_SECRET_ACCESS_KEY }}
+        run: bin/kamal deploy -d production

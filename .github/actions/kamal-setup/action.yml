@@ -1,0 +1,33 @@
+name: Kamal setup
+description: Ruby, Docker Buildx (with arm64 emulation) and SSH access to the deploy server
+
+inputs:
+  ruby-version:
+    required: true
+  ssh-private-key:
+    required: true
+  server:
+    description: Host from config/deploy.yml
+    default: 195.201.147.221
+
+runs:
+  using: composite
+  steps:
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: ${{ inputs.ruby-version }}
+        bundler-cache: true
+
+    # config/deploy.yml builds for amd64 and arm64; QEMU lets the amd64 runner build arm64.
+    - uses: docker/setup-qemu-action@v3
+    - uses: docker/setup-buildx-action@v3
+
+    - uses: webfactory/ssh-agent@v0.9.0
+      with:
+        ssh-private-key: ${{ inputs.ssh-private-key }}
+
+    - name: Trust the deploy server's host key
+      shell: bash
+      run: |
+        mkdir -p ~/.ssh
+        ssh-keyscan -H ${{ inputs.server }} >> ~/.ssh/known_hosts
