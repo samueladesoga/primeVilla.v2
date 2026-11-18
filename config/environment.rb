@@ -5,11 +5,10 @@ require_relative "application"
 Rails.application.initialize!
 
 ActionMailer::Base.smtp_settings = {
-  :user_name => "apikey",
-  :password =>   Rails.application.credentials.dig(:sendgrid_api_key),
+  :user_name => "94f4c7001@smtp-brevo.com",
+  :password =>   Rails.application.credentials.dig(:brevo_api_key),
   :domain => ENV["ROOT_URL"],
-  :address => 'smtp.sendgrid.net',
+  :address => 'smtp-relay.brevo.com',
   :port => 587,
-  :authentication => :plain,
-  :enable_starttls_auto => true
+  :starttls => true
 }

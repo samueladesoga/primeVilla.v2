@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
   mount MissionControl::Jobs::Engine, at: "/jobs"
+  mount Litestream::Engine, at: "/litestream"
+
   resources :tenancies do
     get :renew, on: :member
   end

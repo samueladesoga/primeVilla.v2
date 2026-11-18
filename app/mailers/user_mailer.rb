@@ -4,12 +4,12 @@ class UserMailer < ApplicationMailer
   def welcome_email
     @user = params[:user]
     @setup_url = edit_password_url(@user.generate_token_for(:account_setup))
-    mail(to: @user.email_address, subject: "Welcome to the SS Hall hostel management system")
+    mail(to: @user.email_address, bcc: hostel.admin_email, subject: "Welcome to the SS Hall hostel management system")
   end
 
   def tenancy_created
     @tenancy = params[:tenancy]
-    mail(to: @tenancy.user.email_address, subject: "SS Hall: Your tenancy has been registered")
+    mail(to: @tenancy.user.email_address, bcc: hostel.admin_email, subject: "SS Hall: Your tenancy has been registered")
   end
 
   def rent_due_soon

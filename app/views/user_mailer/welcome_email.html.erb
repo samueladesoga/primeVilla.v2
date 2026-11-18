@@ -7,7 +7,7 @@
 <p>
   <strong><%= link_to "Set your password", @setup_url %></strong> to get started.
   This link works for <%= User::ACCOUNT_SETUP_LINK_VALIDITY.inspect %>. If it expires, use “Forgot password?” on the
-  <%= link_to "login page", login_url %> with this email address (<%= @user.email_address %>).
+  <%= link_to "login page", root_url %> with this email address (<%= @user.email_address %>).
 </p>
 <p>If you have any questions, please reach out to the hostel management team.</p>
 <p>We wish you a pleasant stay at the hostel.</p>

@@ -67,5 +67,6 @@ end
 
 gem "tailwindcss-rails", "~> 4.2"
 
+gem "litestream", "~> 0.14.0"
 gem "prawn", "~> 2.5"
 gem "prawn-table", "~> 0.2.2"

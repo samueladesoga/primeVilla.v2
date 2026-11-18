@@ -6,7 +6,8 @@ image: samadesoga/prime_villa
 env:
   clear:
     RAILS_ENV: "staging"
-    ROOT_URL: https://staging.theprimevilla.com/
+    ROOT_URL: http://staging.theprimevilla.com/
+    PORT: "5000"
 volumes:
   - "/db/staging.sqlite3:/rails/db/staging.sqlite3"
   - "/storage:/rails/storage"
