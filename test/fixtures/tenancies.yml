@@ -1,15 +1,24 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
+# Active, ends in 10 days (expiring soon)
 one:
   user: one
   room: one
-  start_date: 2025-06-05
-  end_date: 2025-06-05
-  comments: MyText
+  start_date: <%= Date.current - 355 %>
+  end_date: <%= Date.current + 10 %>
+  comments: Paid in full
+  is_active: true
 
+# Active, ended 5 days ago (overdue)
 two:
   user: two
   room: two
-  start_date: 2025-06-05
-  end_date: 2025-06-05
-  comments: MyText
+  start_date: <%= Date.current - 370 %>
+  end_date: <%= Date.current - 5 %>
+  is_active: true
+
+# Historical
+old:
+  user: one
+  room: one
+  start_date: <%= Date.current - 720 %>
+  end_date: <%= Date.current - 355 %>
+  is_active: false

@@ -1,0 +1,16 @@
+Rent overdue for SS Hall
+========================
+
+Hi <%= @full_name %>,
+
+Your rent expired on <%= @tenancy_end_date %>, <%= pluralize(@elapsed_days, "day") %> ago. Please arrange payment as soon as possible so that we don't have to lock your room.
+
+Please pay directly into the account below (never to an agent):
+Account name: <%= hostel.bank_account_name %>
+Bank: <%= hostel.bank_name %>
+Account number: <%= hostel.bank_account_number %>
+
+Regards,
+The Management
+<%= hostel.name %>
+<%= hostel.website %>

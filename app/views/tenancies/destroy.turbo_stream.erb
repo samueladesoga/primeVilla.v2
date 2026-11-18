@@ -1,9 +1,2 @@
-<%= turbo_stream.replace @tenancy do %>
-  <tr id="#">
-    <td class="px-5 py-4 sm:px-6"><%= @tenancy.room&.name %></td>
-    <td class="px-5 py-4 sm:px-6">Empty</td>
-    <td class="px-5 py-4 sm:px-6">Empty</td>
-    <td class="px-5 py-4 sm:px-6">Empty</td>
-    <td class="px-5 py-4 sm:px-6">Empty</td>
-  </tr>
-<% end %>
+<%= turbo_stream.replace dom_id(@room, :tenancy_row), partial: "tenancies/room_row", locals: { room: @room } %>
+<%= turbo_stream.update "flash", partial: "layouts/flash" %>

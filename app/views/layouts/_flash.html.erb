@@ -1,10 +1,9 @@
-<% if flash[:alert] %>
-  <div class="mb-4 rounded-lg bg-red-100 px-4 py-3 text-red-700 border border-red-300">
-    <%= flash[:alert] %>
-  </div>
-<% end %>
-<% if flash[:notice] %>
-  <div class="mb-4 rounded-lg bg-green-100 px-4 py-3 text-green-700 border border-green-300">
-    <%= flash[:notice] %>
-  </div>
+<% { alert: "bg-red-50 text-red-800 border-red-200", notice: "bg-green-50 text-green-800 border-green-200" }.each do |type, classes| %>
+  <% if flash[type].present? %>
+    <div data-controller="dismiss" role="<%= type == :alert ? "alert" : "status" %>"
+         class="mb-4 flex items-start justify-between gap-4 rounded-lg border px-4 py-3 <%= classes %>">
+      <p><%= flash[type] %></p>
+      <button type="button" data-action="dismiss#dismiss" aria-label="Dismiss" class="text-lg leading-none opacity-60 hover:opacity-100 cursor-pointer">&times;</button>
+    </div>
+  <% end %>
 <% end %>

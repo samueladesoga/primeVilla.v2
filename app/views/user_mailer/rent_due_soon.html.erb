@@ -1,22 +1,12 @@
-<h1>Rent Due for SS Hall</h1>
-<p>Hi  <%= @full_name %>,</p>
+<h1>Rent due for SS Hall</h1>
+<p>Hi <%= @full_name %>,</p>
 <p>
-  Thank you for continuing to stay in the hostel.
-
-  You rent is due in a month and we would like you to start making preparation for pay before your current tenancy expires on <%= @tenancy_end_date %>.
+  Thank you for continuing to stay in the hostel. Your rent is due soon: your current tenancy expires on <strong><%= @tenancy_end_date %></strong>.
+  Please start preparing to pay before then.
 </p>
 <p>
-  Please contact us by email if payment on time is going to be an issue for you. Alternatively if you do not wish you renew your tenancy, please inform us as well.
-
-  Please pay into:
-  Samuel Adesoga
-  Zenith Bank 2283023374
+  If paying on time is going to be an issue, or you don't wish to renew your tenancy, please let us know by email.
 </p>
-<p>Regards,
-  <br>
-  The Management,
-  <br>
-  SS Hall (The Prime Villa)
-  <br>
-  www.theprimevilla.com
-</p>
+<%= render "payment_details" %>
+<p>You can check your tenancy at any time at <%= link_to login_url, login_url %>.</p>
+<%= render "signature" %>

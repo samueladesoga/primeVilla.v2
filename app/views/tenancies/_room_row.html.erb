@@ -1,0 +1,41 @@
+<% tenancy = room.active_tenancy %>
+<tr id="<%= dom_id(room, :tenancy_row) %>">
+  <td class="font-medium whitespace-nowrap"><%= link_to room.name, room, class: "hover:underline" %></td>
+  <% if tenancy %>
+    <td>
+      <%= link_to tenancy.user.name, tenancy, class: "hover:underline" %>
+      <div class="text-xs text-gray-500 sm:hidden">Ends <%= l(tenancy.end_date) %></div>
+      <% if tenancy.user.parent_phone_number.present? %>
+        <div class="text-xs text-gray-500 md:hidden">Next of kin: <%= link_to tenancy.user.parent_phone_number, "tel:#{tenancy.user.parent_phone_number}", class: "hover:underline" %></div>
+      <% end %>
+    </td>
+    <td class="hidden md:table-cell">
+      <% if tenancy.user.parent_phone_number.present? %>
+        <%= link_to tenancy.user.parent_phone_number, "tel:#{tenancy.user.parent_phone_number}", class: "whitespace-nowrap hover:underline" %>
+        <% if tenancy.user.parent_name.present? %><div class="text-xs text-gray-500"><%= tenancy.user.parent_name %></div><% end %>
+      <% else %>
+        <span class="text-gray-400">—</span>
+      <% end %>
+    </td>
+    <td class="hidden sm:table-cell"><%= l(tenancy.start_date) %></td>
+    <td class="hidden sm:table-cell"><%= l(tenancy.end_date) %></td>
+    <td><%= tenancy_status_badge(tenancy) %></td>
+    <td class="hidden lg:table-cell max-w-xs truncate" title="<%= tenancy.comments %>"><%= tenancy.comments %></td>
+    <td>
+      <div class="flex items-center gap-3 whitespace-nowrap">
+        <%= link_to "Renew", renew_tenancy_path(tenancy), class: "link" %>
+        <%= link_to "Edit", edit_tenancy_path(tenancy), class: "link" %>
+        <%= button_to "End", tenancy_path(tenancy), method: :delete, class: "link-danger",
+              data: { turbo_confirm: "End #{tenancy.user.name}'s tenancy and mark #{room.name} as empty?" } %>
+      </div>
+    </td>
+  <% else %>
+    <td class="text-gray-400">Vacant</td>
+    <td class="hidden md:table-cell"></td>
+    <td class="hidden sm:table-cell"></td>
+    <td class="hidden sm:table-cell"></td>
+    <td><span class="badge-gray">Vacant</span></td>
+    <td class="hidden lg:table-cell"></td>
+    <td><%= link_to "Assign tenant", new_tenancy_path(room_id: room.id), class: "link" %></td>
+  <% end %>
+</tr>

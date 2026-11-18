@@ -1,27 +1,58 @@
-  <h1 class="font-bold text-4xl m-10">Tenancy Record</h1>
-  <ul>
-    <% if Current.user.tenancies.empty? %>
-      <li>No tenancies found.</li>
-    <% else %>
-      <% Current.user.tenancies.order(end_date: :desc).each do |tenancy| %>
-        <div class="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-white-100 dark:bg-white-800">
-          <li>
-            <strong> <%= tenancy.room.name %></strong><br>
-            <strong>Start Date:</strong> <%= l(tenancy.start_date) %><br>
-            <strong>End Date:</strong> <%= l(tenancy.end_date) %>
-          </li>
+<h1 class="page-title">My tenancy</h1>
+
+<div class="grid gap-6 lg:grid-cols-3">
+  <div class="lg:col-span-2 space-y-6">
+    <% if @current_tenancy %>
+      <section class="card">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <p class="text-sm text-gray-500">Current room</p>
+            <p class="text-2xl font-bold"><%= @current_tenancy.room.name %></p>
+          </div>
+          <%= tenancy_status_badge(@current_tenancy) %>
         </div>
-        <br>
+        <dl class="mt-4 grid grid-cols-2 gap-4 text-sm">
+          <div><dt class="text-gray-500">Start date</dt><dd class="font-medium"><%= l(@current_tenancy.start_date) %></dd></div>
+          <div><dt class="text-gray-500">End date</dt><dd class="font-medium"><%= l(@current_tenancy.end_date) %></dd></div>
+        </dl>
+        <% if @current_tenancy.status.in?([:overdue, :expiring_soon]) %>
+          <p class="mt-4 rounded-md bg-amber-50 p-3 text-sm text-amber-900">
+            <% if @current_tenancy.expired? %>
+              Your rent expired <%= pluralize(@current_tenancy.days_overdue, "day") %> ago. Please pay as soon as possible. See “How to pay rent” for the account details.
+            <% else %>
+              Your rent is due on <%= l(@current_tenancy.end_date) %>. Please pay before then. See “How to pay rent” for the account details.
+            <% end %>
+          </p>
         <% end %>
+      </section>
+    <% else %>
+      <section class="card"><p class="text-gray-500">You don't have an active tenancy.</p></section>
     <% end %>
-  </ul>
 
-
-  <div class="block p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-white-800 dark:border-green-700 mt-50">
-     <p>
-        Please do NOT pay any money to an agent. All rents should be paid directly to the account below:<br>
-          <strong>Account Name: Samuel Adesoga</strong><br>
-          <strong>Bank:</strong> Zenith Bank<br>
-          <strong>Account Number:</strong> 2283023374
-     </p>
+    <% past = @tenancies.reject(&:is_active?) %>
+    <% if past.any? %>
+      <section class="card">
+        <h2 class="card-title">Previous tenancies</h2>
+        <ul class="divide-y divide-gray-100 text-sm">
+          <% past.each do |tenancy| %>
+            <li class="flex justify-between py-2">
+              <span class="font-medium"><%= tenancy.room.name %></span>
+              <span class="text-gray-500"><%= l(tenancy.start_date) %> – <%= l(tenancy.end_date) %></span>
+            </li>
+          <% end %>
+        </ul>
+      </section>
+    <% end %>
   </div>
+
+  <aside class="card border-green-300 h-fit">
+    <h2 class="card-title">How to pay rent</h2>
+    <p class="text-sm mb-3">Please do <strong>not</strong> pay any money to an agent. All rent should be paid directly to:</p>
+    <dl class="text-sm space-y-1">
+      <div><dt class="inline text-gray-500">Account name:</dt> <dd class="inline font-medium"><%= hostel.bank_account_name %></dd></div>
+      <div><dt class="inline text-gray-500">Bank:</dt> <dd class="inline font-medium"><%= hostel.bank_name %></dd></div>
+      <div><dt class="inline text-gray-500">Account number:</dt> <dd class="inline font-medium"><%= hostel.bank_account_number %></dd></div>
+    </dl>
+    <p class="mt-4 text-sm"><%= link_to "Update my contact details or password", edit_profile_path, class: "link" %></p>
+  </aside>
+</div>

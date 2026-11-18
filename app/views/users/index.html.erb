@@ -1,34 +1,52 @@
-<h1 class="text-lg font-semibold text-gray-800 dark:text-black/90 mb-10">Users</h1>
-<div class="border border-gray-200 bg-white rounded-xl overflow-hidden">
-  <div class="max-w-full overflow-x-auto custom-scrollbar">
-    <table class="w-full min-w-[900px]">
-      <thead class="bg-gray-100">
-        <tr class="border-b border-gray-100">
-          <th class="px-5 py-3 text-left sm:px-6"><p class="font-medium text-black-500 text-theme-xs">First Name</p></th>
-          <th class="px-5 py-3 text-left sm:px-6"><p class="font-medium text-black-500 text-theme-xs">Last Name</p></th>
-          <th class="px-5 py-3 text-left sm:px-6"><p class="font-medium text-black-500 text-theme-xs">Email</p></th>
-          <th class="px-5 py-3 text-left sm:px-6"><p class="font-medium text-black-500 text-theme-xs">Phone Number</p></th>
-          <th class="px-5 py-3 text-left sm:px-6"><p class="font-medium text-black-500 text-theme-xs">Parent's Name</p></th>
-          <th class="px-5 py-3 text-left sm:px-6"><p class="font-medium text-black-500 text-theme-xs">Parent's Phone Number</p></th>
-          <th class="px-5 py-3 text-left sm:px-6"></th>
+<% content_for :title, "Tenants" %>
+
+<div class="flex flex-wrap items-center justify-between gap-3 mb-6">
+  <h1 class="page-title mb-0">Tenants</h1>
+  <%= link_to "+ New tenant", new_registrations_path, class: "btn-success" %>
+</div>
+
+<%= form_with url: users_path, method: :get, class: "mb-4 flex gap-2", data: { turbo_action: "replace" } do |form| %>
+  <%= form.label :q, "Search tenants", class: "sr-only" %>
+  <%= form.search_field :q, value: params[:q], placeholder: "Search by name, email or phone", class: "input max-w-md" %>
+  <%= form.submit "Search", class: "btn-secondary", name: nil %>
+  <% if params[:q].present? %><%= link_to "Clear", users_path, class: "btn-secondary" %><% end %>
+<% end %>
+
+<div class="bg-white border border-gray-200 rounded-xl overflow-x-auto">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Room</th>
+        <th class="hidden md:table-cell">Phone</th>
+        <th class="hidden lg:table-cell">Email</th>
+        <th class="hidden xl:table-cell">Parent / guardian</th>
+        <th><span class="sr-only">Actions</span></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if @users.empty? %>
+        <tr><td colspan="6" class="text-center text-gray-500 py-6">No tenants found.</td></tr>
+      <% end %>
+      <% @users.each do |user| %>
+        <tr>
+          <td class="font-medium"><%= link_to user.name, user, class: "hover:underline" %></td>
+          <td>
+            <% if user.active_tenancy %>
+              <%= link_to user.active_tenancy.room.name, user.active_tenancy, class: "hover:underline" %>
+            <% else %>
+              <%= link_to "Assign room", new_tenancy_path(user_id: user.id), class: "link" %>
+            <% end %>
+          </td>
+          <td class="hidden md:table-cell"><%= user.phone_number.present? ? link_to(user.phone_number, "tel:#{user.phone_number}", class: "hover:underline") : "—" %></td>
+          <td class="hidden lg:table-cell"><%= user.email_address %></td>
+          <td class="hidden xl:table-cell">
+            <%= user.parent_name.presence || "—" %>
+            <% if user.parent_phone_number.present? %><div class="text-xs text-gray-500"><%= user.parent_phone_number %></div><% end %>
+          </td>
+          <td><%= link_to "Edit", edit_user_path(user), class: "link" %></td>
         </tr>
-      </thead>
-      <tbody>
-        <% @users.each do |user| %>
-          <tr class="border-b border-gray-100">
-            <td class="px-5 py-4 sm:px-6"><%= user.first_name %></td>
-            <td class="px-5 py-4 sm:px-6"><%= user.last_name %></td>
-            <td class="px-5 py-4 sm:px-6"><%= user.email_address %></td>
-            <td class="px-5 py-4 sm:px-6"><%= user.phone_number %></td>
-            <td class="px-5 py-4 sm:px-6"><%= user.parent_name %></td>
-            <td class="px-5 py-4 sm:px-6"><%= user.parent_phone_number %></td>
-            <td class="px-5 py-4 sm:px-6 flex space-x-2">
-              <%= link_to 'Edit', edit_user_path(user), class: "text-blue-600 hover:underline" %>
-              <%= button_to 'Delete', user_path(user), method: :delete, data: { turbo_confirm: 'Are you sure?' }, class: "text-red-600 hover:underline" %>
-            </td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-  </div>
+      <% end %>
+    </tbody>
+  </table>
 </div>

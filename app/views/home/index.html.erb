@@ -1,8 +1,2 @@
-<div>
-  <% if Current.user.admin? %>
-    <%= render 'admin_index' %>
-  <% else %>
-    <%= render 'tenant_index' %>
-  <% end %>
-
-</div>
+<% content_for :title, Current.user.admin? ? "Dashboard" : "My tenancy" %>
+<%= render Current.user.admin? ? "admin_index" : "tenant_index" %>
