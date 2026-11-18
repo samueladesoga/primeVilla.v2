@@ -5,15 +5,14 @@ name: CI / Deploy
 # - Production deploys after staging, once approved in the "production"
 #   environment (Settings → Environments → production → Required reviewers).
 # - "Run workflow" in the Actions tab re-runs the whole pipeline on main.
+#
+# Ruby comes from .ruby-version; keep it in sync with ARG RUBY_VERSION in the Dockerfile.
 
 on:
   pull_request:
   push:
     branches: [ main ]
   workflow_dispatch:
-
-env:
-  RUBY_VERSION: "3.3.13" # keep in sync with ARG RUBY_VERSION in Dockerfile
 
 jobs:
   scan_ruby:
@@ -22,7 +21,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: ${{ env.RUBY_VERSION }}
+          ruby-version: .ruby-version
           bundler-cache: true
       - name: Scan for common Rails security vulnerabilities
         run: bin/brakeman --no-pager
@@ -33,7 +32,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: ${{ env.RUBY_VERSION }}
+          ruby-version: .ruby-version
           bundler-cache: true
       - name: Scan JavaScript dependencies
         run: bin/importmap audit
@@ -44,7 +43,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: ${{ env.RUBY_VERSION }}
+          ruby-version: .ruby-version
           bundler-cache: true
       - name: Lint
         run: bin/rubocop -f github
@@ -55,7 +54,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: ${{ env.RUBY_VERSION }}
+          ruby-version: .ruby-version
           bundler-cache: true
       - name: Build CSS
         run: bin/rails tailwindcss:build
@@ -79,7 +78,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/kamal-setup
         with:
-          ruby-version: ${{ env.RUBY_VERSION }}
+          ruby-version: .ruby-version
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
       - name: Write staging master key
         env:
@@ -105,7 +104,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/kamal-setup
         with:
-          ruby-version: ${{ env.RUBY_VERSION }}
+          ruby-version: .ruby-version
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
       - name: Write production master key
         env:
