@@ -1,51 +1,48 @@
-<h1 class="mt-2 text-4xl tracking-tight sm:text-4xl text-pretty">Tenancy Snapshot</h1>
+<h1 class="page-title">Dashboard</h1>
 
-<div class="block p-6 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-white-100 dark:bg-white-800 dark:border-gray-700">
-    <h2 class="text-2xl font-bold mb-3">Empty Rooms</h2>
-    <ul>
-    <% @vacant_rooms.each do |room| %>
-        <li>
-        <strong> <%= room.name %> </strong><br>
-        </li>
-    <% end %>
-    </ul>
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+  <%= link_to tenancies_path, class: "card hover:border-yellow-700" do %>
+    <p class="text-sm text-gray-500">Occupied</p>
+    <p class="text-3xl font-bold"><%= @occupied_count %><span class="text-base font-normal text-gray-500"> / <%= @room_count %></span></p>
+  <% end %>
+  <a href="#vacant" class="card hover:border-yellow-700">
+    <p class="text-sm text-gray-500">Vacant rooms</p>
+    <p class="text-3xl font-bold"><%= @vacant_rooms.size %></p>
+  </a>
+  <a href="#expiring" class="card hover:border-yellow-700">
+    <p class="text-sm text-gray-500">Expiring in 30 days</p>
+    <p class="text-3xl font-bold text-amber-600"><%= @expiring_tenancies.size %></p>
+  </a>
+  <a href="#overdue" class="card hover:border-yellow-700">
+    <p class="text-sm text-gray-500">Overdue</p>
+    <p class="text-3xl font-bold text-red-600"><%= @overdue_tenancies.size %></p>
+  </a>
 </div>
 
-<br>
-<br>
-<div class="block p-6 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-white-100 dark:bg-white-800 dark:border-gray-700">
-    <h2 class="text-2xl font-bold mb-3">Out Dated Tenancies</h2>
+<div class="space-y-6">
+  <section id="overdue" class="card">
+    <h2 class="card-title">Overdue tenancies</h2>
+    <%= render "tenancy_list", tenancies: @overdue_tenancies, empty_message: "No tenancies are overdue." %>
+  </section>
 
-    <div class="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
-      <div class="max-w-full overflow-x-auto custom-scrollbar">
-        <table class="w-full min-w-[1102px]">
-          <thead class="bg-gray-100">
-            <tr class="border-b border-gray-100">
-              <th class="px-5 py-3 text-left sm:px-6"><p class="font-medium text-black-500 text-theme-xs">Room</p></th>
-              <th class="px-5 py-3 text-left sm:px-6"><p class="font-medium text-black-500 text-theme-xs">Tenant</p></th>
-              <th class="px-5 py-3 text-left sm:px-6"><p class="font-medium text-black-500 text-theme-xs">Start Date</p></th>
-              <th class="px-5 py-3 text-left sm:px-6"><p class="font-medium text-black-500 text-theme-xs">End Date</p></th>
-              <th class="px-5 py-3 text-left sm:px-6"><p class="font-medium text-black-500 text-theme-xs">Comments</p></th>
-            </tr>
-          </thead>
-          <tbody>
-            <% if @active_tenancies_with_expired_rents.nil? %>
-              <tr class="border-b border-gray-100">
-                <td colspan="5" class="px-5 py-4 sm:px-6 text-center">No tenancies with expired rent</td>
-              </tr> 
-            <% else %>
-              <% @active_tenancies_with_expired_rents.each do |tenancy| %>
-                <tr class="border-b border-gray-100">
-                  <td class="px-5 py-4 sm:px-6"><%= tenancy.room.name %></td>
-                  <td class="px-5 py-4 sm:px-6"><%= tenancy.user.name %></td>
-                  <td class="px-5 py-4 sm:px-6"><%= l(tenancy.start_date) %></td>
-                  <td class="px-5 py-4 sm:px-6"><%= l(tenancy.end_date) %></td>
-                  <td class="px-5 py-4 sm:px-6"><%= tenancy.comments %></td>
-                </tr>
-              <% end %>
-            <% end %>
-          </tbody>
-        </table>
-      </div>
-    </div>
+  <section id="expiring" class="card">
+    <h2 class="card-title">Expiring in the next 30 days</h2>
+    <%= render "tenancy_list", tenancies: @expiring_tenancies, empty_message: "No tenancies expire in the next 30 days." %>
+  </section>
+
+  <section id="vacant" class="card">
+    <h2 class="card-title">Vacant rooms</h2>
+    <% if @vacant_rooms.empty? %>
+      <p class="text-gray-500">Every room is occupied.</p>
+    <% else %>
+      <ul class="divide-y divide-gray-100">
+        <% @vacant_rooms.each do |room| %>
+          <li class="flex items-center justify-between py-2">
+            <%= link_to room.name, room, class: "font-medium hover:underline" %>
+            <%= link_to "Assign tenant", new_tenancy_path(room_id: room.id), class: "link text-sm" %>
+          </li>
+        <% end %>
+      </ul>
+    <% end %>
+  </section>
 </div>

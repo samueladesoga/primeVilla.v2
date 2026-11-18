@@ -1,38 +1,44 @@
-<% content_for :title, "Showing room" %>
+<% content_for :title, @room.name %>
 
-  <h1 class="font-bold text-4xl">Showing room</h1>
-
-  <%= render @room %>
-
-  <h1 class="text-2xl font-bold mb-4">Tenancies</h1>
-
-
-<div class="border border-gray-200 bg-white rounded-xl overflow-hidden mt-4">
-  <div class="max-w-full overflow-x-auto custom-scrollbar">
-    <table class="w-full min-w-[700px]">
-      <thead class="bg-gray-100">
-        <tr class="border-b border-gray-100">
-          <th class="px-5 py-3 text-left sm:px-6"><p class="font-medium text-black-500 text-theme-xs">Tenant</p></th>
-          <th class="px-5 py-3 text-left sm:px-6"><p class="font-medium text-black-500 text-theme-xs">Start Date</p></th>
-          <th class="px-5 py-3 text-left sm:px-6"><p class="font-medium text-black-500 text-theme-xs">End Date</p></th>
-          <th class="px-5 py-3 text-left sm:px-6"><p class="font-medium text-black-500 text-theme-xs">Comments</p></th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @room.tenancies.order(end_date: :desc).each do |tenancy| %>
-          <tr class="border-b border-gray-100">
-            <td class="px-5 py-4 sm:px-6"><%= tenancy.user&.name %></td>
-            <td class="px-5 py-4 sm:px-6"><%= l(tenancy.start_date) %></td>
-            <td class="px-5 py-4 sm:px-6"><%= l(tenancy.end_date) %></td>
-            <td class="px-5 py-4 sm:px-6"><%= tenancy.comments %></td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
+<div class="flex flex-wrap items-center justify-between gap-3 mb-6">
+  <h1 class="page-title mb-0"><%= @room.name %></h1>
+  <div class="flex flex-wrap gap-3">
+    <% if @room.occupied? %>
+      <%= link_to "Renew current tenancy", renew_tenancy_path(@room.active_tenancy), class: "btn-success" %>
+    <% else %>
+      <%= link_to "Assign tenant", new_tenancy_path(room_id: @room.id), class: "btn-success" %>
+    <% end %>
+    <%= link_to "Edit", edit_room_path(@room), class: "btn-secondary" %>
+    <% if @tenancies.empty? %>
+      <%= button_to "Delete room", @room, method: :delete, class: "btn-danger", data: { turbo_confirm: "Delete #{@room.name}?" } %>
+    <% end %>
   </div>
 </div>
 
-  <%= link_to "Edit this room", edit_room_path(@room), class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-  <%= link_to "Back to rooms", rooms_path, class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-  <%= button_to "Destroy this room", @room, method: :delete, form_class: "sm:inline-block mt-2 sm:mt-0 sm:ml-2", class: "w-full rounded-md px-3.5 py-2.5 text-white bg-red-600 hover:bg-red-500 font-medium cursor-pointer", data: { turbo_confirm: "Are you sure?" } %>
-</div>
+<section class="card">
+  <h2 class="card-title">Tenancy history</h2>
+  <% if @tenancies.empty? %>
+    <p class="text-gray-500">No one has rented this room yet.</p>
+  <% else %>
+    <div class="overflow-x-auto">
+      <table class="table">
+        <thead>
+          <tr><th>Tenant</th><th>Start</th><th>End</th><th>Status</th><th class="hidden md:table-cell">Notes</th></tr>
+        </thead>
+        <tbody>
+          <% @tenancies.each do |tenancy| %>
+            <tr>
+              <td><%= link_to tenancy.user.name, tenancy, class: "hover:underline" %></td>
+              <td><%= l(tenancy.start_date) %></td>
+              <td><%= l(tenancy.end_date) %></td>
+              <td><%= tenancy_status_badge(tenancy) %></td>
+              <td class="hidden md:table-cell"><%= tenancy.comments %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% end %>
+</section>
+
+<p class="mt-6"><%= link_to "← Back to rooms", rooms_path, class: "link" %></p>

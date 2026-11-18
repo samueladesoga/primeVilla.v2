@@ -1,10 +1,9 @@
-<% content_for :title, "Editing tenancy" %>
+<% content_for :title, "Edit tenancy" %>
 
-<div class="md:w-2/3 w-full">
-  <h1 class="font-bold text-4xl">Editing tenancy</h1>
-
-  <%= render "form", tenancy: @tenancy %>
-
-  <%= link_to "Show this tenancy", @tenancy, class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-  <%= link_to "Back to tenancies", tenancies_path, class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
+<div class="form-card">
+  <h1 class="page-title mb-2">Edit tenancy</h1>
+  <p class="text-sm text-gray-600 mb-6">
+    To record a new rent payment, <%= link_to "renew this tenancy", renew_tenancy_path(@tenancy), class: "link" %> instead, so the history is kept.
+  </p>
+  <%= render "form", tenancy: @tenancy, submit_label: "Save changes", cancel_path: tenancy_path(@tenancy) %>
 </div>

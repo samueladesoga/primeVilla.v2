@@ -1,21 +1,8 @@
-<h1>Rent OverDue for SS Hall</h1>
+<h1>Rent overdue for SS Hall</h1>
 <p>Hi <%= @full_name %>,</p>
 <p>
-  You must have received at least 1 email from us reminding you that you rent is over due.
-
-  You rent rent expired on <%= @tenancy_end_date %> and its now been <%= @elapsed_days %> days since your rent expired. Please make arrangement as soon as possible to make payments so that we dont have to lock up your room.
+  Your rent expired on <strong><%= @tenancy_end_date %></strong>, <%= pluralize(@elapsed_days, "day") %> ago.
+  Please arrange payment as soon as possible so that we don't have to lock your room.
 </p>
-<p>
-  The account for payment remains:
-
-  Samuel Adesoga
-  Zenith Bank 2283023374
-</p>
-<p>Regards,
-  <br>
-  The Management,
-  <br>
-  SS Hall (The Prime Villa)
-  <br>
-  www.theprimevilla.com
-</p>
+<%= render "payment_details" %>
+<%= render "signature" %>

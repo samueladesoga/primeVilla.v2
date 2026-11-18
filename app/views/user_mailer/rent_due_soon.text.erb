@@ -1,0 +1,20 @@
+Rent due for SS Hall
+====================
+
+Hi <%= @full_name %>,
+
+Thank you for continuing to stay in the hostel. Your rent is due soon: your current tenancy expires on <%= @tenancy_end_date %>. Please start preparing to pay before then.
+
+If paying on time is going to be an issue, or you don't wish to renew your tenancy, please let us know by email.
+
+Please pay directly into the account below (never to an agent):
+Account name: <%= hostel.bank_account_name %>
+Bank: <%= hostel.bank_name %>
+Account number: <%= hostel.bank_account_number %>
+
+You can check your tenancy at any time at <%= root_url %>
+
+Regards,
+The Management
+<%= hostel.name %>
+<%= hostel.website %>

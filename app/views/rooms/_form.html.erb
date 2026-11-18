@@ -1,30 +1,11 @@
-<div class="mt-24">
-  <div class="max-w-2xl mx-auto md:w-2/3 w-full">
-    <div class="px-6 py-4 border border-gray-300 rounded-xl">
-      <h1 class="font-bold text-2xl">Room</h1>
-      <%= form_with(model: room, class: "shadow-md rounded px-8 pt-6 pb-8 mb-4") do |form| %>
-        <% if room.errors.any? %>
-          <div class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
-            <h2><%= pluralize(room.errors.count, "error") %> prohibited this room from being saved:</h2>
-            <ul class="list-disc ml-6">
-              <% room.errors.each do |error| %>
-                <li><%= error.full_message %></li>
-              <% end %>
-            </ul>
-          </div>
-        <% end %>
-        <div class="my-5">
-          <%= form.label :name %>
-          <%= form.text_field :name, class: "block shadow rounded-md border border-gray-400 focus:outline-orange-600 px-3 py-2 mt-2 w-full" %>
-        </div>
-        <div class="col-span-6 sm:flex sm:items-center sm:gap-4">
-          <div class="flex w-full items-center justify-between">
-            <div class="inline">
-              <%= form.submit class: "rounded-lg py-2 px-6 bg-yellow-800 text-white inline-block font-medium cursor-pointer" %>
-            </div>
-          </div>
-        </div>
-      <% end %>
-    </div>
+<%= form_with(model: room) do |form| %>
+  <%= render "shared/form_errors", record: room %>
+  <div class="field">
+    <%= form.label :name, class: "label" %>
+    <%= form.text_field :name, class: "input", required: true, autofocus: true, placeholder: "e.g. Room 12" %>
   </div>
-</div>
+  <div class="flex flex-wrap gap-3">
+    <%= form.submit class: "btn-primary" %>
+    <%= link_to "Cancel", room.persisted? ? room_path(room) : rooms_path, class: "btn-secondary" %>
+  </div>
+<% end %>

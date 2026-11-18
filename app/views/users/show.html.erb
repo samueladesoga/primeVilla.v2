@@ -1,0 +1,53 @@
+<% content_for :title, @user.name %>
+
+<div class="flex flex-wrap items-center justify-between gap-3 mb-6">
+  <h1 class="page-title mb-0"><%= @user.name %></h1>
+  <div class="flex flex-wrap gap-3">
+    <% if @user.active_tenancy %>
+      <%= link_to "Renew tenancy", renew_tenancy_path(@user.active_tenancy), class: "btn-success" %>
+    <% else %>
+      <%= link_to "Assign room", new_tenancy_path(user_id: @user.id), class: "btn-success" %>
+    <% end %>
+    <%= link_to "Edit", edit_user_path(@user), class: "btn-secondary" %>
+    <% if @tenancies.empty? %>
+      <%= button_to "Delete tenant", @user, method: :delete, class: "btn-danger", data: { turbo_confirm: "Delete #{@user.name}? This can't be undone." } %>
+    <% end %>
+  </div>
+</div>
+
+<div class="grid gap-6 lg:grid-cols-3">
+  <section class="card h-fit">
+    <h2 class="card-title">Contact</h2>
+    <dl class="space-y-3 text-sm">
+      <div><dt class="text-gray-500">Email</dt><dd><%= mail_to @user.email_address, nil, class: "hover:underline" %></dd></div>
+      <div><dt class="text-gray-500">Phone</dt><dd><%= @user.phone_number.present? ? link_to(@user.phone_number, "tel:#{@user.phone_number}", class: "hover:underline") : "—" %></dd></div>
+      <div><dt class="text-gray-500">Parent / guardian</dt><dd><%= @user.parent_name.presence || "—" %></dd></div>
+      <div><dt class="text-gray-500">Parent / guardian phone</dt><dd><%= @user.parent_phone_number.present? ? link_to(@user.parent_phone_number, "tel:#{@user.parent_phone_number}", class: "hover:underline") : "—" %></dd></div>
+    </dl>
+  </section>
+
+  <section class="card lg:col-span-2">
+    <h2 class="card-title">Tenancies</h2>
+    <% if @tenancies.empty? %>
+      <p class="text-gray-500">No tenancies yet.</p>
+    <% else %>
+      <div class="overflow-x-auto">
+        <table class="table">
+          <thead><tr><th>Room</th><th>Start</th><th>End</th><th>Status</th></tr></thead>
+          <tbody>
+            <% @tenancies.each do |tenancy| %>
+              <tr>
+                <td><%= link_to tenancy.room.name, tenancy, class: "hover:underline" %></td>
+                <td><%= l(tenancy.start_date) %></td>
+                <td><%= l(tenancy.end_date) %></td>
+                <td><%= tenancy_status_badge(tenancy) %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% end %>
+  </section>
+</div>
+
+<p class="mt-6"><%= link_to "← Back to tenants", users_path, class: "link" %></p>

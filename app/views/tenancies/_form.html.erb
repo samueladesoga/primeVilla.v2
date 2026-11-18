@@ -1,49 +1,39 @@
+<%= form_with(model: tenancy, url: tenancy.persisted? ? tenancy_path(tenancy) : tenancies_path) do |form| %>
+  <%= render "shared/form_errors", record: tenancy %>
+  <%= hidden_field_tag :previous_tenancy_id, @previous_tenancy.id if @previous_tenancy %>
 
-<div class="mt-24">
-  <div class="max-w-2xl mx-auto md:w-2/3 w-full">
-    <div class="px-6 py-4 border border-gray-300 rounded-xl">
-      <h1 class="font-bold text-2xl">Tenancy</h1>
-      <%= form_with(model: tenancy, local: true, class: "shadow-md rounded px-8 pt-6 pb-8 mb-4") do |form| %>
-        <% if tenancy.errors.any? %>
-          <div class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
-            <h2><%= pluralize(tenancy.errors.count, "error") %> prohibited this tenancy from being saved:</h2>
-            <ul class="list-disc ml-6">
-              <% tenancy.errors.full_messages.each do |message| %>
-                <li><%= message %></li>
-              <% end %>
-            </ul>
-          </div>
-        <% end %>
-        <%= form.hidden_field :is_active, value: true %>
-        <div class="my-5">
+  <div class="field">
+    <%= form.label :user_id, "Tenant", class: "label" %>
+    <%= form.collection_select :user_id, tenant_options_for(tenancy), :id, :name,
+          { include_blank: "Select a tenant" }, { class: "input", required: true } %>
+    <p class="hint"><%= tenancy.user ? "Lists this tenant and anyone without a room." : "Only tenants without a room are listed." %> <%= link_to "Create a new tenant", new_registrations_path, class: "link" %></p>
+  </div>
 
-          <%= form.label :user_id, "Tenant" %>
-          <%= form.collection_select :user_id, User.all.filter { |user| !user.admin? }, :id, :name, { prompt: "Select a user" }, { class: "block shadow rounded-md border border-gray-400 focus:outline-orange-600 px-3 py-2 mt-2 w-full" } %>
-        </div>
-        <div class="my-5">
-          <%= form.label :room_id, "Room" %>
-          <%= form.collection_select :room_id, Room.all, :id, :name, { prompt: "Select a room" }, { class: "block shadow rounded-md border border-gray-400 focus:outline-orange-600 px-3 py-2 mt-2 w-full" } %>
-        </div>
-        <div class="my-5">
-          <%= form.label :start_date %>
-          <%= form.text_field :start_date, placeholder: "Select a Tenancy Start Date", class: "block shadow rounded-md border border-gray-400 focus:outline-orange-600 px-3 py-2 mt-2 w-full", data: { controller: "date-picker" } %>
-        </div>
-        <div class="my-5">
-          <%= form.label :end_date %>
-          <%= form.date_field :end_date, placeholder: "Select a Tenancy End Date", class: "block shadow rounded-md border border-gray-400 focus:outline-orange-600 px-3 py-2 mt-2 w-full", data: { controller: "date-picker" } %>
-        </div>
-        <div class="my-5">
-          <%= form.label :comments, "Notes" %>
-          <%= form.text_area :comments, rows: 4, class: "block shadow rounded-md border border-gray-400 focus:outline-orange-600 px-3 py-2 mt-2 w-full" %>
-        </div>
-        <div class="col-span-6 sm:flex sm:items-center sm:gap-4">
-          <div class="flex w-full items-center justify-between">
-            <div class="inline">
-              <%= form.submit class: "rounded-lg py-2 px-6 bg-yellow-800 text-white inline-block font-medium cursor-pointer" %>
-            </div>
-          </div>
-        </div>
-      <% end %>
+  <div class="field">
+    <%= form.label :room_id, "Room", class: "label" %>
+    <%= form.collection_select :room_id, room_options_for(tenancy), :id, :name,
+          { include_blank: "Select a room" }, { class: "input", required: true } %>
+    <p class="hint"><%= tenancy.room ? "Lists this room and all vacant rooms." : "Only vacant rooms are listed." %></p>
+  </div>
+
+  <div class="grid gap-4 sm:grid-cols-2">
+    <div class="field">
+      <%= form.label :start_date, class: "label" %>
+      <%= form.text_field :start_date, placeholder: "Select a start date", class: "input", required: true, data: { controller: "date-picker" } %>
+    </div>
+    <div class="field">
+      <%= form.label :end_date, class: "label" %>
+      <%= form.text_field :end_date, placeholder: "Select an end date", class: "input", required: true, data: { controller: "date-picker" } %>
     </div>
   </div>
-</div>
+
+  <div class="field">
+    <%= form.label :comments, "Notes", class: "label" %>
+    <%= form.text_area :comments, rows: 3, class: "input", placeholder: "e.g. amount paid, payment reference" %>
+  </div>
+
+  <div class="flex flex-wrap gap-3">
+    <%= form.submit submit_label, class: "btn-primary" %>
+    <%= link_to "Cancel", cancel_path, class: "btn-secondary" %>
+  </div>
+<% end %>

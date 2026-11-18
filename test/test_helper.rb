@@ -9,7 +9,15 @@ module ActiveSupport
 
     # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
     fixtures :all
-
-    # Add more helper methods to be used by all tests here...
   end
+end
+
+module SignInHelper
+  def sign_in_as(user)
+    post session_path, params: { email_address: user.email_address, password: "password" }
+  end
+end
+
+class ActionDispatch::IntegrationTest
+  include SignInHelper
 end

@@ -1,12 +1,15 @@
 Rails.application.routes.draw do
   mount MissionControl::Jobs::Engine, at: "/jobs"
   mount Litestream::Engine, at: "/litestream"
-  
-  resources :tenancies
+
+  resources :tenancies do
+    get :renew, on: :member
+  end
   resources :rooms
   root to: "home#index"
   resource :session
-  resources :users
+  resources :users, except: %i[new create]
+  resource :profile, only: %i[edit update]
   get  "/login",  to: "sessions#new"
   post "/login",  to: "sessions#create"
   delete "/logout", to: "sessions#destroy"

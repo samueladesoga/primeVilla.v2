@@ -1,0 +1,30 @@
+<div class="grid gap-4 sm:grid-cols-2">
+  <div class="field">
+    <%= form.label :first_name, class: "label" %>
+    <%= form.text_field :first_name, class: "input", required: true, autocomplete: "given-name" %>
+  </div>
+  <div class="field">
+    <%= form.label :last_name, class: "label" %>
+    <%= form.text_field :last_name, class: "input", required: true, autocomplete: "family-name" %>
+  </div>
+</div>
+<% if local_assigns.fetch(:email, true) %>
+  <div class="field">
+    <%= form.label :email_address, "Email address", class: "label" %>
+    <%= form.email_field :email_address, class: "input", required: true, autocomplete: "email" %>
+  </div>
+<% end %>
+<div class="field">
+  <%= form.label :phone_number, class: "label" %>
+  <%= form.telephone_field :phone_number, class: "input", autocomplete: "tel" %>
+</div>
+<div class="grid gap-4 sm:grid-cols-2">
+  <div class="field">
+    <%= form.label :parent_name, "Parent / guardian name", class: "label" %>
+    <%= form.text_field :parent_name, class: "input" %>
+  </div>
+  <div class="field">
+    <%= form.label :parent_phone_number, "Parent / guardian phone", class: "label" %>
+    <%= form.telephone_field :parent_phone_number, class: "input" %>
+  </div>
+</div>

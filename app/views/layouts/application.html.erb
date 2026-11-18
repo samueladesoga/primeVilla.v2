@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-     <%= stylesheet_link_tag 'tailwind', "data-turbo-track": "reload" %>
-    <title><%= content_for(:title) || "Prime Villa" %></title>
+    <title><%= content_for?(:title) ? "#{yield(:title)} · Prime Villa" : "Prime Villa" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
@@ -14,28 +13,33 @@
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <link rel="apple-touch-icon" href="/favicon.ico">
 
+    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag :application, "data-turbo-track": "reload" %>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.css">
 
     <%= javascript_importmap_tags %>
   </head>
 
-  <body class="bg-gray-100 text-gray-800 font-sans">
-    <header class="bg-white shadow p-4 mb-6">
-      <div class="container mx-auto flex justify-between items-center">
-        <h1 class="text-xl font-bold text-orange-500">Prime Villa (SS Hall)</h1>
+  <body class="bg-gray-100 text-gray-800 font-sans min-h-screen">
+    <header class="bg-white shadow-sm">
+      <div class="container mx-auto px-4 py-3 flex items-center justify-between gap-4">
+        <%= link_to "Prime Villa (SS Hall)", root_path, class: "text-lg sm:text-xl font-bold text-orange-500" %>
         <% if Current.user.present? %>
-          <p>Welcome, <%= Current.user.name %></p>
-          <%= button_to "Logout", logout_path, method: :delete, class: "text-red-500", form: { data: { turbo: false } } %>
+          <div class="flex items-center gap-3 text-sm">
+            <%= link_to Current.user.name, edit_profile_path, class: "hidden sm:inline text-gray-700 hover:underline", title: "Edit your profile" %>
+            <%= link_to "Profile", edit_profile_path, class: "sm:hidden text-gray-700 hover:underline" %>
+            <%= button_to "Log out", logout_path, method: :delete, class: "text-red-600 hover:underline cursor-pointer", form: { data: { turbo: false } } %>
+          </div>
         <% else %>
-          <%= link_to "Login", login_path, class: "text-yellow-800" %>
+          <%= link_to "Log in", login_path, class: "text-yellow-800 font-medium" %>
         <% end %>
       </div>
     </header>
 
-    <main class="container mx-auto px-4">
-      <%= render "layouts/navbar" %>
-      <%= render "layouts/flash" %>
+    <%= render "layouts/navbar" %>
+
+    <main class="container mx-auto px-4 py-6">
+      <div id="flash"><%= render "layouts/flash" %></div>
       <%= yield %>
     </main>
   </body>
