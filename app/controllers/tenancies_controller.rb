@@ -3,7 +3,7 @@ class TenanciesController < ApplicationController
   before_action :set_tenancy, only: %i[ show edit update destroy renew ]
 
   def index
-    @rooms = Room.includes(active_tenancy: :user).order(:name)
+    @rooms = Room.in_room_order(Room.includes(active_tenancy: :user))
 
     respond_to do |format|
       format.html
@@ -60,7 +60,7 @@ class TenanciesController < ApplicationController
 
   # Ends the tenancy (keeps it as history) rather than deleting it.
   def destroy
-    @tenancy.update!(is_active: false)
+    @tenancy.end!
     @room = @tenancy.room
     message = "#{@room.name} is now empty."
 

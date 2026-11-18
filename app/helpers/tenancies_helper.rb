@@ -11,6 +11,6 @@ module TenanciesHelper
   def room_options_for(tenancy)
     rooms = Room.vacant.to_a
     rooms << tenancy.room if tenancy.room && rooms.exclude?(tenancy.room)
-    rooms.sort_by { |room| room.name.downcase }
+    Room.in_room_order(rooms)
   end
 end

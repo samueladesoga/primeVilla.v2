@@ -3,7 +3,7 @@ class RoomsController < ApplicationController
   before_action :set_room, only: %i[ show edit update destroy ]
 
   def index
-    @rooms = Room.includes(active_tenancy: :user).order(:name)
+    @rooms = Room.in_room_order(Room.includes(active_tenancy: :user))
   end
 
   def show

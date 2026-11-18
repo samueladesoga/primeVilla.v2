@@ -19,6 +19,26 @@ class TenancyTest < ActiveSupport::TestCase
     assert tenancy.errors[:user].any?
   end
 
+  test "end! brings the end date forward when the tenant moves out early" do
+    tenancy = tenancies(:one) # ends in 10 days
+    tenancy.end!
+    assert_not tenancy.is_active?
+    assert_equal Date.current, tenancy.end_date
+  end
+
+  test "end! keeps the end date when the tenancy has already run out" do
+    tenancy = tenancies(:two) # ended 5 days ago
+    assert_no_changes -> { tenancy.reload.end_date } do
+      tenancy.end!
+    end
+    assert_not tenancy.is_active?
+  end
+
+  test "the database allows only one active tenancy per room" do
+    duplicate = Tenancy.new(user: users(:three), room: rooms(:one), start_date: Date.current + 400, end_date: Date.current + 700, is_active: true)
+    assert_raises(ActiveRecord::RecordNotUnique) { duplicate.save!(validate: false) }
+  end
+
   test "status" do
     assert_equal :expiring_soon, tenancies(:one).status
     assert_equal :overdue, tenancies(:two).status

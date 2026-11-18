@@ -19,6 +19,14 @@ class TenanciesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "index lists rooms in number order" do
+    room_ten = Room.create!(name: "Room 10")
+    get tenancies_url
+    row_ids = css_select("tbody tr[id^='tenancy_row_room_']").map { |row| row["id"] }
+    expected = [ rooms(:one), rooms(:two), rooms(:three), room_ten ].map { |room| "tenancy_row_room_#{room.id}" }
+    assert_equal expected, row_ids
+  end
+
   test "index shows the parent / next of kin number" do
     get tenancies_url
     assert_select "#tenancy_row_room_#{rooms(:one).id} a[href='tel:08100000001']", minimum: 1
@@ -88,6 +96,17 @@ class TenanciesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_not @tenancy.reload.is_active?
     assert_match "Assign tenant", response.body
+  end
+
+  test "after a tenant moves out early, a new tenant can be assigned to the room" do
+    delete tenancy_url(@tenancy)
+    assert_equal Date.current, @tenancy.reload.end_date
+
+    assert_difference -> { Tenancy.active.count } do
+      post tenancies_url, params: { tenancy: { user_id: users(:three).id, room_id: rooms(:one).id,
+                                               start_date: Date.current, end_date: Date.current + 365 } }
+    end
+    assert_equal users(:three), rooms(:one).reload.active_tenancy.user
   end
 
   test "ending a tenancy from the show page redirects back" do
