@@ -14,7 +14,7 @@ class CreateSolidQueueRecurringTasks < ActiveRecord::Migration[8.0]
       t.datetime :updated_at, null: false
     end
 
-    add_index :solid_queue_recurring_tasks, [:key], name: "index_solid_queue_recurring_tasks_on_key", unique: true
-    add_index :solid_queue_recurring_tasks, [:static], name: "index_solid_queue_recurring_tasks_on_static"
+    add_index :solid_queue_recurring_tasks, [ :key ], name: "index_solid_queue_recurring_tasks_on_key", unique: true
+    add_index :solid_queue_recurring_tasks, [ :static ], name: "index_solid_queue_recurring_tasks_on_static"
   end
 end

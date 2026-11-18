@@ -8,8 +8,8 @@ class CreateSolidQueueSemaphores < ActiveRecord::Migration[8.0]
       t.datetime :updated_at, null: false
     end
 
-    add_index :solid_queue_semaphores, [:expires_at], name: "index_solid_queue_semaphores_on_expires_at"
-    add_index :solid_queue_semaphores, [:key, :value], name: "index_solid_queue_semaphores_on_key_and_value"
-    add_index :solid_queue_semaphores, [:key], name: "index_solid_queue_semaphores_on_key", unique: true
+    add_index :solid_queue_semaphores, [ :expires_at ], name: "index_solid_queue_semaphores_on_expires_at"
+    add_index :solid_queue_semaphores, [ :key, :value ], name: "index_solid_queue_semaphores_on_key_and_value"
+    add_index :solid_queue_semaphores, [ :key ], name: "index_solid_queue_semaphores_on_key", unique: true
   end
 end

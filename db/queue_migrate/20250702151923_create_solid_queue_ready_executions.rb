@@ -7,8 +7,8 @@ class CreateSolidQueueReadyExecutions < ActiveRecord::Migration[8.0]
       t.datetime :created_at, null: false
     end
 
-    add_index :solid_queue_ready_executions, [:job_id], name: "index_solid_queue_ready_executions_on_job_id", unique: true
-    add_index :solid_queue_ready_executions, [:priority, :job_id], name: "index_solid_queue_poll_all"
-    add_index :solid_queue_ready_executions, [:queue_name, :priority, :job_id], name: "index_solid_queue_poll_by_queue"
+    add_index :solid_queue_ready_executions, [ :job_id ], name: "index_solid_queue_ready_executions_on_job_id", unique: true
+    add_index :solid_queue_ready_executions, [ :priority, :job_id ], name: "index_solid_queue_poll_all"
+    add_index :solid_queue_ready_executions, [ :queue_name, :priority, :job_id ], name: "index_solid_queue_poll_by_queue"
   end
 end

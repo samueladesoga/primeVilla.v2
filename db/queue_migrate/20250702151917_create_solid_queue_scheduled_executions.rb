@@ -8,7 +8,7 @@ class CreateSolidQueueScheduledExecutions < ActiveRecord::Migration[8.0]
       t.datetime :created_at, null: false
     end
 
-    add_index :solid_queue_scheduled_executions, [:job_id], name: "index_solid_queue_scheduled_executions_on_job_id", unique: true
-    add_index :solid_queue_scheduled_executions, [:scheduled_at, :priority, :job_id], name: "index_solid_queue_dispatch_all"
+    add_index :solid_queue_scheduled_executions, [ :job_id ], name: "index_solid_queue_scheduled_executions_on_job_id", unique: true
+    add_index :solid_queue_scheduled_executions, [ :scheduled_at, :priority, :job_id ], name: "index_solid_queue_dispatch_all"
   end
 end
