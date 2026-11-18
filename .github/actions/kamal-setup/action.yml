@@ -24,8 +24,15 @@ runs:
       with:
         ssh-private-key: ${{ inputs.ssh-private-key }}
 
+    # Pinned host keys instead of running ssh-keyscan on each deploy: a scan from the
+    # runner left known_hosts without a usable ed25519 entry (Kamal failed with
+    # HostKeyMismatch), and pinning also stops a spoofed server from being trusted.
+    # Update these if the server is rebuilt (ssh-keyscan <server>).
     - name: Trust the deploy server's host key
       shell: bash
       run: |
         mkdir -p ~/.ssh
-        ssh-keyscan -H ${{ inputs.server }} >> ~/.ssh/known_hosts
+        cat >> ~/.ssh/known_hosts <<'KNOWN_HOSTS'
+        ${{ inputs.server }} ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDY6K3E2GwgITe+QQ9vI987uuevorXIZnB6vNQGXxvN6
+        ${{ inputs.server }} ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBNdlhuaGghNKKM4VY+7hdfvRreQiRvkz3ICoIcsVAiGKauSP/Czo5DMKtsiY8wS3mePPqSl1+dFaaMuhK6BfOLI=
+        KNOWN_HOSTS
