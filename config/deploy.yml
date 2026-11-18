@@ -13,9 +13,7 @@ env:
     - RAILS_MASTER_KEY
     - LITESTREAM_SECRET_ACCESS_KEY
 builder:
-  arch:
-      - amd64
-      - arm64
+  arch: amd64
 aliases:
   shell: app exec -i --reuse "bash"
   console: app exec -i --reuse "bin/rails console"
